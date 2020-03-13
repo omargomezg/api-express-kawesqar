@@ -1,4 +1,5 @@
 const config = require("../config/config");
+const jwt = require("jsonwebtoken");
 const sql = require("mssql");
 
 module.exports = {
@@ -18,7 +19,7 @@ module.exports = {
 
     put: (req, resp) => {
         sql
-            .connect(config )
+            .connect(config)
             .then(pool => {
                 return pool.request()
                     .input("idBodega", sql.Int, req.body.id)
@@ -33,4 +34,4 @@ module.exports = {
                 resp.status(500).send("Escribre error" + err);
             });
     }
-}
+};

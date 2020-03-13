@@ -74,7 +74,7 @@ exports.getBodegasAsociadas = function (req, resp) {
         .catch(err => {
             resp.status(500).send("Escribre error" + err);
         });
-}
+};
 
 exports.asociarBodega = function (req, resp) {
     sql
@@ -92,7 +92,7 @@ exports.asociarBodega = function (req, resp) {
         .catch(err => {
             resp.status(500).send("Escribre error" + err);
         });
-}
+};
 
 exports.getFamilias = function (req, resp) {
     //getFamiliasBySucursal
@@ -109,7 +109,7 @@ exports.getFamilias = function (req, resp) {
         .catch(err => {
             resp.status(500).send("Escribre error" + err);
         });
-}
+};
 
 exports.asociarFamilia = function (req, resp) {
     sql
@@ -127,4 +127,4 @@ exports.asociarFamilia = function (req, resp) {
         .catch(err => {
             resp.status(500).send("Escribre error" + err);
         });
-}
+};
