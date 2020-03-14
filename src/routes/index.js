@@ -5,6 +5,8 @@ const sucursalRouter = require("./sucursal");
 const usuarioRouter = require("./usuario");
 const bodegaRouter = require("./bodega");
 const familiaRouter = require("./familia");
+const productoRouter = require("./producto");
+const medidaRouter = require("./medida");
 const protectedRoute = express.Router();
 const jwt = require("jsonwebtoken");
 const config = require("../config/config");
@@ -14,16 +16,20 @@ protectedRoute.use((req, res, next) => {
     if (token) {
         jwt.verify(token, config.key().llave, (err, decoded) => {
             if (err) {
-                return res.json({ mensaje: 'Token inválida' });
+                return res
+                    .status(401)
+                    .json({ mensaje: 'Token inválida' });
             } else {
                 req.decoded = decoded;
                 next();
             }
         });
     } else {
-        res.send({
-            mensaje: 'Token no proveída.'
-        });
+        res
+            .status(401)
+            .send({
+                mensaje: 'Token no proveída.'
+            });
     }
 });
 
@@ -35,5 +41,7 @@ router.use("/sucursal", protectedRoute, sucursalRouter);
 router.use("/usuario", protectedRoute, usuarioRouter);
 router.use("/bodega", protectedRoute, bodegaRouter);
 router.use("/familia", protectedRoute, familiaRouter);
+router.use("/producto", protectedRoute, productoRouter);
+router.use("/medida", protectedRoute, medidaRouter);
 
 module.exports = router;
