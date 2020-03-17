@@ -7,17 +7,28 @@ module.exports = {
     getAll: (req, resp) => {
         let key = '_express_' + req.originalUrl || req.url;
         let cacheBody = cache.get(key);
-        if (cacheBody) {
+        if (cacheBody && !req.params.refresh) {
             resp.send(cacheBody);
         } else {
             sql.connect(config.config()).then(pool => {
                 return pool.request()
                     .query(`
-                SELECT dbo.Articulos.IdArticulo, dbo.Articulos.NomArticulo, dbo.Articulos.IdMedida, dbo.Articulos.Estado, dbo.Articulos.Alerta, dbo.Articulos.vencimiento, dbo.Articulos.ID, dbo.Articulos.ganancia, dbo.Medidas.NomMedida, dbo.Articulos.Notas, dbo.Articulos.precioGranel
+                SELECT Articulos.IdArticulo,
+                       Articulos.NomArticulo,
+                       Articulos.IdMedida,
+                       Articulos.Estado,
+                       Articulos.Alerta,
+                       Articulos.vencimiento,
+                       Articulos.ID,
+                       Articulos.ganancia,
+                       Medidas.NomMedida,
+                       Articulos.Notas,
+                       Articulos.precioGranel
                 FROM dbo.Articulos INNER JOIN dbo.Medidas ON dbo.Articulos.IdMedida = dbo.Medidas.IdMedida
+                ORDER BY Articulos.lastUpdate DESC
                 `)
             }).then(result => {
-                cache.put(key, result.recordset, 10000);
+                cache.put(key, result.recordset, 30000);
                 resp.send(result.recordset);
             }).catch(err => {
                 resp.status(500).send("Escribre error" + err);
@@ -48,12 +59,12 @@ module.exports = {
                 return pool.request()
                     .input("idArticulo", sql.NVarChar(50), req.body.sku)
                     .input("nomArticulo", sql.NVarChar(50), req.body.nomArticulo)
-                    .input("idMedida", sql.Int, req.body.IdMedida)
+                    .input("idMedida", sql.Int, req.body.idMedida)
                     .input("estado", sql.Bit, req.body.estado)
-                    .input("alerta", sql.Int, req.body.Alerta)
+                    .input("alerta", sql.Int, req.body.alerta)
                     .input("estadoAlerta", sql.Bit, req.body.estadoAlerta)
                     .input("vencimiento", sql.Bit, req.body.vencimiento)
-                    .input("notas", sql.Text, req.body.Notas)
+                    .input("notas", sql.Text, req.body.notas)
                     .input("ganancia", sql.Money, req.body.ganancia)
                     .input("idFamilia", sql.Int, req.body.idFamilia)
                     .input("precioGranel", sql.Money, req.body.precioGranel)
@@ -63,7 +74,7 @@ module.exports = {
                     .execute("mantenedorArticulos");
             })
             .then(result => {
-                resp.send(result.recordset[0]);
+                resp.sendStatus(200);
             })
             .catch(err => {
                 resp.status(500).send("Escribre error" + err);

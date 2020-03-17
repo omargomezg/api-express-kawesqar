@@ -4,6 +4,7 @@ const router = express.Router();
 
 router
     .get("/", familiaController.getAll)
-    .post("/", familiaController.update);
+    .post("/", familiaController.update)
+    .post("/quick-create", familiaController.quickCreate);
 
 module.exports = router;
