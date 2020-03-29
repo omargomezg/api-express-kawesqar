@@ -7,6 +7,8 @@ const bodegaRouter = require("./bodega");
 const familiaRouter = require("./familia");
 const productoRouter = require("./producto");
 const medidaRouter = require("./medida");
+const rolRouter = require("./rol");
+const tipoEgresoRouter = require("./tipo-egreso");
 const protectedRoute = express.Router();
 const jwt = require("jsonwebtoken");
 const config = require("../config/config");
@@ -43,5 +45,7 @@ router.use("/bodega", protectedRoute, bodegaRouter);
 router.use("/familia", protectedRoute, familiaRouter);
 router.use("/producto", protectedRoute, productoRouter);
 router.use("/medida", protectedRoute, medidaRouter);
+router.use("/rol", protectedRoute, rolRouter);
+router.use("/tipo-egreso", protectedRoute, tipoEgresoRouter);
 
 module.exports = router;

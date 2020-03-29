@@ -25,7 +25,10 @@ module.exports = {
                        Articulos.Notas,
                        Articulos.precioGranel
                 FROM dbo.Articulos INNER JOIN dbo.Medidas ON dbo.Articulos.IdMedida = dbo.Medidas.IdMedida
+                WHERE estado = ${req.params.isActive ? 1 : 0} and nomArticulo LIKE '%${req.params.text === 'null' ? '' : req.params.text }%'
                 ORDER BY Articulos.lastUpdate DESC
+                OFFSET 0 ROWS
+                FETCH NEXT 150 ROWS ONLY;
                 `)
             }).then(result => {
                 cache.put(key, result.recordset, 30000);

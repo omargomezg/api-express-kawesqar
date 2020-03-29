@@ -3,22 +3,48 @@ const sql = require("mssql");
 
 module.exports = {
 
-    getBydId: (req, resp) => {
-        sql
-            .connect(config.config())
+    getById: (req, resp) => {
+        if(req.params.light) {
+            getLightMany(req, resp);
+        } else {
+            sql
+                .connect(config.config())
+                .then(pool => {
+                    return pool.request()
+                        .input("rut", sql.VarChar(12), req.params.rut)
+                        .execute("userByRut");
+                })
+                .then(result => {
+                    resp.send(result.recordset[0]);
+                })
+                .catch(err => {
+                    resp.status(500).send("Escribre error" + err);
+                });
+        }
+    },
+    getLightMany: (req, resp) => {
+        sql.connect(config.config())
             .then(pool => {
                 return pool.request()
-                    .input("rut", sql.VarChar(12), req.params.rut)
-                    .execute("userByRut");
+                    .query(`
+                        SELECT rut                                               AS rut,
+                               firstName + ' ' + lastName + ' ' + secondLastName AS fullName,
+                               fechaCreacion                                     AS created,
+                               estado                                            AS isActive,
+                               userName                                          AS userName,
+                               eMail                                             AS email,
+                               updated                                           AS lastUpdate,
+                               rol
+                        FROM cs_usuarios
+                        ORDER BY updated DESC`)
             })
             .then(result => {
-                resp.send(result.recordset[0]);
+                resp.send(result.recordset);
             })
             .catch(err => {
                 resp.status(500).send("Escribre error" + err);
             });
     },
-
     getMany: (req, resp) => {
         sql
             .connect(config.config())

@@ -3,7 +3,7 @@ const productController = require("../controllers/producto");
 const router = express.Router();
 
 router
-    .get("/:refresh", productController.getAll)
+    .get("/:refresh/:isActive/:text", productController.getAll)
     .get("/producto/:id", productController.getById)
     .post("/:id", productController.save);
 
