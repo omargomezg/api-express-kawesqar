@@ -9,6 +9,9 @@ const productoRouter = require("./producto");
 const medidaRouter = require("./medida");
 const rolRouter = require("./rol");
 const tipoEgresoRouter = require("./tipo-egreso");
+const facturaRouter = require("./factura");
+const proveedorRouter = require("./proveedor.route");
+const tipoDocumentoRouter = require("./tipoDocumento.route");
 const protectedRoute = express.Router();
 const jwt = require("jsonwebtoken");
 const config = require("../config/config");
@@ -20,7 +23,7 @@ protectedRoute.use((req, res, next) => {
             if (err) {
                 return res
                     .status(401)
-                    .json({ mensaje: 'Token inválida' });
+                    .json({mensaje: 'Token inválida'});
             } else {
                 req.decoded = decoded;
                 next();
@@ -47,5 +50,8 @@ router.use("/producto", protectedRoute, productoRouter);
 router.use("/medida", protectedRoute, medidaRouter);
 router.use("/rol", protectedRoute, rolRouter);
 router.use("/tipo-egreso", protectedRoute, tipoEgresoRouter);
+router.use("/factura", protectedRoute, facturaRouter);
+router.use("/proveedor", protectedRoute, proveedorRouter);
+router.use("/tipo-documento", tipoDocumentoRouter);
 
 module.exports = router;

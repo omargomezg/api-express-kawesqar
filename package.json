@@ -19,6 +19,8 @@
     "mssql": "^6.1.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.3",
+    "@types/mssql": "^6.0.0",
+    "@types/express": "^4.17.6"
   }
 }
