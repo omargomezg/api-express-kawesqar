@@ -45,10 +45,10 @@ module.exports = {
         sql.connect(config.config()).then(pool => {
             return pool.request()
                 .query(`
-                SELECT idFamilia as id,
-                        NomFamilia as name,
-                        Estado as isActive,
-                        code
+                    SELECT idFamilia  as id,
+                           NomFamilia as name,
+                           Estado     as isActive,
+                           code
                     FROM familia
                 `)
         }).then(result => {

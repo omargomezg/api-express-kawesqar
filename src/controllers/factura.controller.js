@@ -1,8 +1,4 @@
-const config = require("../config/config");
-const sql = require("mssql");
 const facturaDao = require("../dao/factura.dao")
-const proveedorDao = require("../dao/proveedor.dao");
-const jwtUtils = require("../services/jwt");
 
 module.exports = {
     getAll: async (req, resp, next) => {
