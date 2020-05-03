@@ -1,9 +1,8 @@
-const facturaDao = require("../dao/factura.dao")
+const facturaDAO = require("../dao/factura.dao");
 
 module.exports = {
     getAll: async (req, resp, next) => {
-        // const rut = jwtUtils.getUserRut(req.headers['access-token']);        
-        facturaDao.getAll(req.params.estado, data => {
+        facturaDAO.getAll(req.params.estado, data => {
             const facturas = data.map(function (item) {
                 const factura = {}
                 const proveedor = {}
@@ -17,5 +16,10 @@ module.exports = {
             });
             resp.send(facturas);
         });
+    },
+    save: (req, resp, next) => {
+        const rut = jwtUtils.getUserRut(req.headers['access-token']);
+        const param = {}
+        facturaDAO.save(rut, param);
     }
 };

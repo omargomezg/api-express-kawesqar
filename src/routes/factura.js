@@ -1,8 +1,9 @@
 const express = require("express");
-const facturaController = require("../controllers/factura.controller");
+const invoiceController = require("../controllers/factura.controller");
 const router = express.Router();
 
 router
-    .get("/:estado", facturaController.getAll)
+    .get("/:estado", invoiceController.getAll)
+    .post("/", invoiceController.save);
 
 module.exports = router;

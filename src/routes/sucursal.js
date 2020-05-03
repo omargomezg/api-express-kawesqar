@@ -1,15 +1,15 @@
 const express = require("express");
-const sucursalController = require("../controllers/sucursal");
+const subsidiaryController = require("../controllers/sucursal");
 const router = express.Router();
 
 router
-    .get("/", sucursalController.getSucursales)
-    .get("/:id", sucursalController.getBydId)
-    .put("/:id", sucursalController.mantenedorSucursal)
-    .post("/", sucursalController.mantenedorSucursal)
-    .get("/:id/bodegas-asociadas", sucursalController.getBodegasAsociadas)
-    .post("/:id/bodegas-asociadas", sucursalController.asociarBodega)
-    .get("/:id/familia", sucursalController.getFamilias)
-    .post("/:id/familia", sucursalController.asociarFamilia);
+    .get("/", subsidiaryController.getSucursales)
+    .get("/:id", subsidiaryController.getBydId)
+    .put("/:id", subsidiaryController.mantenedorSucursal)
+    .post("/", subsidiaryController.mantenedorSucursal)
+    .get("/:id/bodegas-asociadas", subsidiaryController.getBodegasAsociadas)
+    .post("/:id/bodegas-asociadas", subsidiaryController.asociarBodega)
+    .get("/:id/familia", subsidiaryController.getFamilias)
+    .post("/:id/familia", subsidiaryController.relateFamily);
 
 module.exports = router;

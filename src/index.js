@@ -1,18 +1,17 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const config = require("./config/config");
 const cors = require("cors");
 const routes = require("./routes");
 
 const app = express();
-const { PORT = 3000 } = process.env;
+const {PORT = 3000} = process.env;
 
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use('/api', routes);
 app.get('/', (req, res) => {
-    res.send({ message: 'Hola' })
+    res.send({message: 'Hola'})
 });
 
 if (require.main === module) {

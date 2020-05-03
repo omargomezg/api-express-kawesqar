@@ -1,15 +1,16 @@
 const express = require("express");
 const authenticationRoutes = require("./autentica");
 const comunasRoutes = require("./comunas");
-const sucursalRouter = require("./sucursal");
-const usuarioRouter = require("./usuario");
+const subsidiaryRouter = require("./sucursal");
+const userRouter = require("./usuario");
+const miAccountRouter = require('./miCuenta.router')
 const bodegaRouter = require("./bodega");
-const familiaRouter = require("./familia");
+const familyRouter = require("./familia");
 const productoRouter = require("./producto");
-const medidaRouter = require("./medida");
+const measureRouter = require("./medida");
 const rolRouter = require("./rol");
 const tipoEgresoRouter = require("./tipo-egreso");
-const facturaRouter = require("./factura");
+const invoiceRouter = require("./factura");
 const proveedorRouter = require("./proveedor.route");
 const tipoDocumentoRouter = require("./tipoDocumento.route");
 const protectedRoute = express.Router();
@@ -42,16 +43,18 @@ const router = express.Router();
 
 router.use("/authentication", authenticationRoutes);
 router.use("/comuna", protectedRoute, comunasRoutes);
-router.use("/sucursal", protectedRoute, sucursalRouter);
-router.use("/usuario", protectedRoute, usuarioRouter);
+router.use("/sucursal", protectedRoute, subsidiaryRouter);
+router.use("/usuario", protectedRoute, userRouter);
+router.use("/mi-cuenta", protectedRoute, miAccountRouter);
 router.use("/bodega", protectedRoute, bodegaRouter);
-router.use("/familia", protectedRoute, familiaRouter);
+router.use("/familia", protectedRoute, familyRouter);
 router.use("/producto", protectedRoute, productoRouter);
-router.use("/medida", protectedRoute, medidaRouter);
+router.use("/medida", protectedRoute, measureRouter);
 router.use("/rol", protectedRoute, rolRouter);
 router.use("/tipo-egreso", protectedRoute, tipoEgresoRouter);
-router.use("/factura", protectedRoute, facturaRouter);
+router.use("/factura", protectedRoute, invoiceRouter);
 router.use("/proveedor", protectedRoute, proveedorRouter);
-router.use("/tipo-documento", tipoDocumentoRouter);
+router.use("/tipo-documento", protectedRoute, tipoDocumentoRouter);
+router.use('/registro-documento', );
 
 module.exports = router;

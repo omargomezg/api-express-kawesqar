@@ -1,7 +1,19 @@
 const config = require("../config/config");
 const sql = require("mssql");
+const jwtUtils = require('../services/jwt');
 
-exports.getBydId = function (req, resp) {
+module.exports = {
+    getBydId: getBydId,
+    getSucursales: getSucursales,
+    getSucursalByUserRut: getSubsidiaryByUserRut,
+    mantenedorSucursal: subsidiaryMaintainer,
+    getBodegasAsociadas: getRelatedWarehouse,
+    asociarBodega: relateWarehouse,
+    getFamilias: getRelatedFamily,
+    relateFamily: relateFamily
+}
+
+function getBydId(req, resp) {
     sql
         .connect(config.config())
         .then(pool => {
@@ -15,9 +27,9 @@ exports.getBydId = function (req, resp) {
         .catch(err => {
             resp.status(500).send("Escribre error" + err);
         });
-};
+}
 
-exports.getSucursales = function (req, resp) {
+function getSucursales(req, resp) {
     sql
         .connect(config.config())
         .then(pool => {
@@ -29,11 +41,35 @@ exports.getSucursales = function (req, resp) {
         .catch(err => {
             resp.status(500).send("Escribre error" + err);
         });
-};
+}
+
+function getSubsidiaryByUserRut(req, resp, next) {
+    const rut = jwtUtils.getUserRut(req.headers['access-token']);
+    console.log(rut);
+    sql
+        .connect(config.config())
+        .then(pool => {
+            return pool.request()
+                .query(`
+                    select cs_sucursales.idSucursal,
+                           cs_sucursales.nombre,
+                           cs_sucursales.direccion,
+                           cs_relacion_usuarioSucursal.isSelected  
+                    from cs_relacion_usuarioSucursal inner join cs_sucursales on cs_relacion_usuarioSucursal.idSucursal = cs_sucursales.idSucursal
+                    where rutUsuario = '${rut}' and cs_relacion_usuarioSucursal.estado = 1`);
+        })
+        .then(result => {
+            resp.send(result.recordset);
+        })
+        .catch(err => {
+            resp.status(500).send(err);
+        });
+}
+
 /**
  * Create a new resource
  */
-exports.mantenedorSucursal = function (req, resp) {
+function subsidiaryMaintainer(req, resp) {
     sql
         .connect(config.config())
         .then(pool => {
@@ -58,9 +94,9 @@ exports.mantenedorSucursal = function (req, resp) {
         .catch(err => {
             resp.status(500).send("Escribre error" + err);
         });
-};
+}
 
-exports.getBodegasAsociadas = function (req, resp) {
+function getRelatedWarehouse(req, resp) {
     sql
         .connect(config.config())
         .then(pool => {
@@ -74,9 +110,9 @@ exports.getBodegasAsociadas = function (req, resp) {
         .catch(err => {
             resp.status(500).send("Escribre error" + err);
         });
-};
+}
 
-exports.asociarBodega = function (req, resp) {
+function relateWarehouse(req, resp) {
     sql
         .connect(config.config())
         .then(pool => {
@@ -92,9 +128,9 @@ exports.asociarBodega = function (req, resp) {
         .catch(err => {
             resp.status(500).send("Escribre error" + err);
         });
-};
+}
 
-exports.getFamilias = function (req, resp) {
+function getRelatedFamily(req, resp) {
     //getFamiliasBySucursal
     sql
         .connect(config.config())
@@ -109,9 +145,9 @@ exports.getFamilias = function (req, resp) {
         .catch(err => {
             resp.status(500).send("Escribre error" + err);
         });
-};
+}
 
-exports.asociarFamilia = function (req, resp) {
+function relateFamily(req, resp) {
     sql
         .connect(config.config())
         .then(pool => {
@@ -127,4 +163,4 @@ exports.asociarFamilia = function (req, resp) {
         .catch(err => {
             resp.status(500).send("Escribre error" + err);
         });
-};
+}
