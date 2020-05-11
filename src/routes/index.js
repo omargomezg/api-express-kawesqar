@@ -52,9 +52,7 @@ router.use("/producto", protectedRoute, productoRouter);
 router.use("/medida", protectedRoute, measureRouter);
 router.use("/rol", protectedRoute, rolRouter);
 router.use("/tipo-egreso", protectedRoute, tipoEgresoRouter);
-router.use("/factura", protectedRoute, invoiceRouter);
+router.use("/factura", invoiceRouter);
 router.use("/proveedor", protectedRoute, proveedorRouter);
 router.use("/tipo-documento", protectedRoute, tipoDocumentoRouter);
-router.use('/registro-documento', );
-
 module.exports = router;
