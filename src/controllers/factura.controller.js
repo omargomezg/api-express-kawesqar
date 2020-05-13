@@ -8,21 +8,29 @@ const {Op} = require('sequelize');
 
 module.exports = {
     getAllByState: async (req, res) => {
-        const result = await Invoice.findAll({
-            where: {
-                state: req.params.state
-            },
-            include: [
-                {
-                    model: Provider, as: 'provider'
+        try {
+            const result = await Invoice.findAll({
+                where: {
+                    state: req.params.state
                 },
-                {
-                    model: TypeOfDocument, as: 'typeOfDocument'
-                }
-            ],
-            raw: false
+                include: [
+                    {
+                        model: Provider, as: 'provider'
+                    },
+                    {
+                        model: TypeOfDocument, as: 'typeOfDocument'
+                    }
+                ],
+                raw: false
+            });
+            res.json(result);
+        } catch (e) {
+        console.log(e);
+        res.status(500).json({
+            status: 'fail',
+            message: 'Cannot delete invoice'
         });
-        res.json(result);
+    }
     },
     getAll: async (req, resp, next) => {
         facturaDAO.getAll(req.params.estado, data => {

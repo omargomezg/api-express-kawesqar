@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const config = require('../config/config').sequelize();
 const Model = Sequelize.Model;
+const Invoice = require('./invoice.model');
 
 class ProviderModel extends Model {
 }

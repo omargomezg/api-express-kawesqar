@@ -26,10 +26,9 @@ InvoiceModel.init({
             field: 'estadoUso', type: Sequelize.STRING(50)
         },
         tax: {field: 'valImpuesto', type: Sequelize.INTEGER},
-        document_type_id: {field: 'idTipoDocIn', type: Sequelize.INTEGER},
         comment: {field: 'notas', type: Sequelize.STRING(255)},
         subsidiary_id: {field: 'sucursal', type: Sequelize.TINYINT},
-        user_id: {field: 'rutUsuario', type: Sequelize.STRING(12)}
+        user_id: {field: 'rutUsuario', type: Sequelize.STRING(12)},
     }, {
         sequelize: config,
         modelName: 'facturas',
@@ -37,13 +36,7 @@ InvoiceModel.init({
         timestamps: false
     }
 )
-
-InvoiceModel.hasMany(Provider, {
-    foreignKey: {
-        name: 'rut',
-        allowNull: false
-    }
-});
-InvoiceModel.belongsTo(Provider, {
-    foreignKey: 'provRut', as: 'provider'
-});
+Provider.hasMany(InvoiceModel, {foreignKey: 'provRut', sourceKey: 'rut'});
+InvoiceModel.hasOne(Provider, { foreignKey: 'rut', sourceKey: 'provRut', as: 'provider'});
+TypeOfDocument.hasMany(InvoiceModel, {foreignKey: 'idTipoDocIn', sourceKey: 'id'});
+InvoiceModel.hasOne(TypeOfDocument, {foreignKey: 'id' , sourceKey: 'idTipoDocIn', as: 'typeOfDocument'});

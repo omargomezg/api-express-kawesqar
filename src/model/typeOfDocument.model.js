@@ -18,8 +18,3 @@ TypeOfDocumentModel.init({
     freezeTableName: true,
     timestamps: false
 });
-
-TypeOfDocumentModel.belongsTo(InvoiceModel, {
-    foreignKey: 'idTipoDocIn'
-});
-TypeOfDocumentModel.hasMany(InvoiceModel);
