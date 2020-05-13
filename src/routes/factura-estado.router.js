@@ -3,8 +3,6 @@ const invoiceController = require("../controllers/factura.controller");
 const router = express.Router();
 
 router
-    .get("/", invoiceController.getAll)
-    .post("/", invoiceController.save)
-    .delete('/:id', invoiceController.delete);
+    .get('/:state', invoiceController.getAllByState);
 
 module.exports = router;

@@ -1,13 +1,15 @@
 const Sequelize = require('sequelize');
 const config = require('../config/config').sequelize();
+const Provider = require('./provider.model');
+const TypeOfDocument = require('./typeOfDocument.model');
 const Model = Sequelize.Model;
 
-class Invoice extends Model {
+class InvoiceModel extends Model {
 }
 
-module.exports = Invoice;
+module.exports = InvoiceModel;
 
-Invoice.init({
+InvoiceModel.init({
         id: {
             field: 'idFact',
             type: Sequelize.INTEGER,
@@ -16,10 +18,6 @@ Invoice.init({
         document_number: {
             field: 'NFactura',
             type: Sequelize.CHAR(10)
-        },
-        supplier_id: {
-            field: 'ProvRut',
-            type: Sequelize.STRING(10)
         },
         emission_date: {
             field: 'Fecha', type: Sequelize.DATE
@@ -31,6 +29,7 @@ Invoice.init({
         document_type_id: {field: 'idTipoDocIn', type: Sequelize.INTEGER},
         comment: {field: 'notas', type: Sequelize.STRING(255)},
         subsidiary_id: {field: 'sucursal', type: Sequelize.TINYINT},
+        user_id: {field: 'rutUsuario', type: Sequelize.STRING(12)}
     }, {
         sequelize: config,
         modelName: 'facturas',
@@ -38,3 +37,13 @@ Invoice.init({
         timestamps: false
     }
 )
+
+InvoiceModel.hasMany(Provider, {
+    foreignKey: {
+        name: 'rut',
+        allowNull: false
+    }
+});
+InvoiceModel.belongsTo(Provider, {
+    foreignKey: 'provRut', as: 'provider'
+});

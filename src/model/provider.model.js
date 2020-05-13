@@ -27,4 +27,3 @@ ProviderModel.init({
     freezeTableName: true,
     timestamps: false
 });
-
