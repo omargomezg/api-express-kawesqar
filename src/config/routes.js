@@ -1,6 +1,7 @@
 import InvoiceController from "../controllers/InvoiceController";
 import InvoiceTemporalDetailController from "../controllers/InvoiceTemporalDetailController";
-import CommuneController from "../controllers/CommuneController"
+import CommuneController from "../controllers/CommuneController";
+import Wharehouse from "../controllers/WarehouseController";
 
 export default (server) => {
 
@@ -27,5 +28,13 @@ export default (server) => {
     server.post('/api/commune', CommuneController.insert);
     server.put('/api/commune/:id', CommuneController.update);
     server.delete('/api/commune/:id', CommuneController.delete);
+
+    /**
+     * Chilean commune
+     */
+    server.get('/api/wharehouse', Wharehouse.getAll);
+    server.post('/api/wharehouse', Wharehouse.insert);
+    server.put('/api/wharehouse/:id', Wharehouse.update);
+    server.delete('/api/wharehouse/:id', Wharehouse.delete);
 
 }
