@@ -7,4 +7,10 @@ router
     .post("/", invoiceController.save)
     .delete('/:id', invoiceController.delete);
 
+router
+    .route('/detalle')
+    .get('/:invoice_id', () => {
+
+    });
+
 module.exports = router;

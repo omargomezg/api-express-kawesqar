@@ -54,6 +54,7 @@ router.use('/medida', protectedRoute, measureRouter);
 router.use('/rol', protectedRoute, rolRouter);
 router.use('/tipo-egreso', protectedRoute, tipoEgresoRouter);
 router.use('/factura', protectedRoute, invoiceRouter);
+router.use('/factura-detalle', protectedRoute, invoiceRouter);
 router.use('/factura-por-estado', invoiceByStatusRouter);
 router.use('/proveedor', protectedRoute, proveedorRouter);
 router.use('/tipo-documento', protectedRoute, tipoDocumentoRouter);

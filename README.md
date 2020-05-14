@@ -2,6 +2,8 @@
 <code>npm run dev</code>
 ###classic run
 <code>npm start</code>
+###Run with las configuration
+<code>npm run dev:start</code>
 
 ####Sequelize
 For run wit datetime format go to data-types.js in sequelize:

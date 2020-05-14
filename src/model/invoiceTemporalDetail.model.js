@@ -2,12 +2,12 @@ const Sequelize = require('sequelize');
 const config = require('../config/config').sequelize();
 const Model = Sequelize.Model;
 
-class InvoiceDetailModel extends Model {
+class InvoiceTemporalDetailModel extends Model {
 }
 
-module.exports = InvoiceDetailModel;
+module.exports = InvoiceTemporalDetailModel;
 
-InvoiceDetailModel.init({
+InvoiceTemporalDetailModel.init({
     id: {
         field: 'ID', type: Sequelize.INTEGER,
         primaryKey: true,

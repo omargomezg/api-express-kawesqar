@@ -3,6 +3,7 @@ const config = require('../config/config').sequelize();
 const Provider = require('./provider.model');
 const TypeOfDocument = require('./typeOfDocument.model');
 const Model = Sequelize.Model;
+const moment = require('moment');
 
 class InvoiceModel extends Model {
 }
@@ -20,7 +21,10 @@ InvoiceModel.init({
             type: Sequelize.CHAR(10)
         },
         emission_date: {
-            field: 'Fecha', type: Sequelize.DATE
+            field: 'Fecha', type: Sequelize.DATE,
+            get() {
+                return moment(this.getDataValue('Fecha')).format('DD-MM-YYYY');
+            }
         },
         state: {
             field: 'estadoUso', type: Sequelize.STRING(50)

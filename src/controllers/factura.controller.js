@@ -1,6 +1,8 @@
 const facturaDAO = require("../dao/factura.dao");
 const Invoice = require('../model/invoice.model');
+const sequelize = require('sequelize');
 const Provider = require('../model/provider.model');
+const moment = require('moment');
 const TypeOfDocument = require('../model/typeOfDocument.model');
 const InvoiceDetail = require('../model/invoiceDetail.model');
 const JwtUtils = require('../services/jwt');
@@ -25,12 +27,12 @@ module.exports = {
             });
             res.json(result);
         } catch (e) {
-        console.log(e);
-        res.status(500).json({
-            status: 'fail',
-            message: 'Cannot delete invoice'
-        });
-    }
+            console.log(e);
+            res.status(500).json({
+                status: 'fail',
+                message: 'Cannot delete invoice'
+            });
+        }
     },
     getAll: async (req, resp, next) => {
         facturaDAO.getAll(req.params.estado, data => {
@@ -52,11 +54,11 @@ module.exports = {
         let invoice = {
             id: req.body.id,
             document_number: req.body.document_number,
-            supplier_id: req.body.proveedor.rut,
+            supplier_id: req.body.provider.rut,
             emission_date: req.body.emission_date,
             state: req.body.state,
             tax: req.body.tax,
-            document_type_id: req.body.tipo.id,
+            document_type_id: req.body.typeOfDocument.id,
             comment: req.body.notas,
             subsidiary_id: req.body.sucursal.id,
             user_id: JwtUtils.getUserRut(req.headers['access-token']),
