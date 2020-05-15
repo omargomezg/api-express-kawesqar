@@ -1,3 +1,10 @@
+
+/**
+ * Copyright Hardnets, Chile
+ * All rights reserved.
+ * omar.fdo.gomez@gmail.com
+ * https://dev.to/pacheco/designing-a-better-architecture-for-a-node-js-api-24d
+ */
 class Service {
     constructor(model) {
         this.model = model;
@@ -8,18 +15,27 @@ class Service {
     }
 
     async getAll(query) {
+        let { skip, limit } = query;
+
+        skip = skip ? Number(skip) : 0;
+        limit = limit ? Number(limit) : 10;
+
+        delete query.skip;
+        delete query.limit;
         try {
-            let items = await this.model.findAll();
+            let items = await this.model.findAll({
+                where: query
+            });
             return {
                 error: false,
                 statusCode: 200,
                 data: items
             }
-        } catch (error) {
+        } catch (errors) {
             return {
                 error: true,
                 statusCode: 500,
-                error
+                errors
             }
         }
     }
@@ -38,8 +54,8 @@ class Service {
             return {
                 error: true,
                 statusCode: 500,
-                message: error.errmsq || 'Not able to create item',
-                error
+                message: error.errmsg || 'Not able to create item',
+                errors: error.errors
             }
         }
     }
@@ -59,7 +75,7 @@ class Service {
             return {
                 error: true,
                 statusCode: 500,
-                error
+                errors: error.errors
             };
         }
     }
@@ -79,7 +95,7 @@ class Service {
             return {
                 error: true,
                 statusCode: 500,
-                error
+                errors: error.errors
             };
         }
     }

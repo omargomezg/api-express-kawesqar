@@ -1,7 +1,6 @@
 const Sequelize = require('sequelize');
 const config = require('../config/config').sequelize();
 const Model = Sequelize.Model;
-const InvoiceModel = require('./invoice.model');
 
 class TypeOfDocumentModel extends Model {
 }

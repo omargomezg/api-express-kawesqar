@@ -1,7 +1,11 @@
 import express from 'express';
+import cors from 'cors';
 import bodyParser from 'body-parser';
 import setRouters from './routes';
+
 const server = express();
+
+server.use(cors());
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: false }))
 server.use(function (req, res, next) {

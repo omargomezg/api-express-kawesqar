@@ -8,12 +8,13 @@ class Controller {
     }
 
     async getAll(req, res) {
-        return res.status(200).send(await this.service.getAll(req.query));
+        const response = await this.service.getAll(req.query);
+        return res.status(response.statusCode).send(response.data);
     }
 
     async insert(req, res) {
         let response = await this.service.insert(req.body);
-        if (response.error) return res.status(response.statusCode).send(response);
+        if (response.error) return res.status(response.statusCode).send(response.data);
         return res.status(201).send(response);
     }
 
