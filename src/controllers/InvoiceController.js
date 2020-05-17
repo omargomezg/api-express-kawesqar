@@ -1,6 +1,6 @@
 import Controller from "./Controller";
-import InvoiceService from "../services/invoiceService";
-import Invoice from "../model/invoice.model";
+import InvoiceService from "../services/InvoiceService";
+import Invoice from "../model/Invoice.model";
 
 const invoiceService = new InvoiceService(
     Invoice

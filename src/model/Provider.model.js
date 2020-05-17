@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const config = require('../config/config').sequelize();
 const Model = Sequelize.Model;
-const Invoice = require('./invoice.model');
+const Invoice = require('./Invoice.model').default;
 
 class ProviderModel extends Model {
 }
@@ -11,9 +11,16 @@ module.exports = ProviderModel;
 ProviderModel.init({
     rut: {
         field: 'provRut', type: Sequelize.STRING(10),
-        primaryKey: true
+        primaryKey: true,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
     },
-    name: {field: 'provNombre', type: Sequelize.STRING(150)},
+    name: {
+        field: 'provNombre', type: Sequelize.STRING(150), allowNull: false, validate: {
+        notEmpty: true
+    }},
     phone_numberFirst: {field: 'provFono', type: Sequelize.STRING(15)},
     phone_numberSecond: {field: 'provFax', type: Sequelize.STRING(15)},
     phone_numberThird: {field: 'provCelular', type: Sequelize.STRING(15)},

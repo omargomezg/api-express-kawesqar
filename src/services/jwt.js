@@ -1,5 +1,5 @@
-const config = require("../config/config");
-const jwt = require("jsonwebtoken");
+import config from "../config/config";
+import jwt from "jsonwebtoken";
 
 module.exports = {
   getUserRut: (token) => {

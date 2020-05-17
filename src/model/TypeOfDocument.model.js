@@ -1,16 +1,16 @@
-const Sequelize = require('sequelize');
+import { Model as _Model, INTEGER, STRING, BOOLEAN } from 'sequelize';
 const config = require('../config/config').sequelize();
-const Model = Sequelize.Model;
+const Model = _Model;
 
 class TypeOfDocumentModel extends Model {
 }
 
-module.exports = TypeOfDocumentModel;
+export default TypeOfDocumentModel;
 
 TypeOfDocumentModel.init({
-    id: {field: 'idTipoDocIn', type: Sequelize.INTEGER, primaryKey: true},
-    name: {field: 'descripcion', type: Sequelize.STRING(50)},
-    isActive: {field: 'estado', type: Sequelize.BOOLEAN}
+    id: {field: 'idTipoDocIn', type: INTEGER, primaryKey: true},
+    name: {field: 'descripcion', type: STRING(50)},
+    isActive: {field: 'estado', type: BOOLEAN}
 }, {
     sequelize: config,
     modelName: 'tipoDocIn',

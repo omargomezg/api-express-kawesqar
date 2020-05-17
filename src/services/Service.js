@@ -42,7 +42,6 @@ class Service {
 
     async insert(data) {
         try {
-            console.log(data);
             let item = await this.model.create(data);
             if (item)
                 return {
@@ -50,12 +49,18 @@ class Service {
                     statusCode: 200,
                     data: item
                 }
-        } catch (error) {
+        } catch (err) {
+            let isUnique = false;
+            if (err.errors) {
+                isUnique = err.errors.some(item => {
+                    return item.type === 'unique violation';
+                });
+            }
             return {
                 error: true,
-                statusCode: 500,
-                message: error.errmsg || 'Not able to create item',
-                errors: error.errors
+                statusCode: isUnique ? 409 : 500,
+                message: err.errmsg || 'Not able to create item',
+                errors: err
             }
         }
     }

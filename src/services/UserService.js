@@ -27,7 +27,7 @@ class UserService extends Service {
                 user: result
             }
             const token = sign(payload, config.key().llave, {
-                expiresIn: 1440
+                expiresIn: 3600000
             });
             return {
                 error: false,

@@ -1,6 +1,6 @@
 import Controller from "./Controller";
 import InvoiceTempService from "../services/InvoiceTempService";
-import InvoiceTemporalDetail from "../model/invoiceTemporalDetail.model";
+import InvoiceTemporalDetail from "../model/InvoiceTemporalDetail.model";
 
 const invoiceTempService = new InvoiceTempService(
     InvoiceTemporalDetail

@@ -1,9 +1,9 @@
 import Service from './Service';
 
-class CommuneService extends Service {
+class MeasureService extends Service {
     constructor(model) {
         super(model);
     }
 }
 
-export default CommuneService;
+export default MeasureService;

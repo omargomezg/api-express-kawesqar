@@ -1,9 +1,12 @@
+import ArticleController from "../controllers/ArticleController";
 import CommuneController from "../controllers/CommuneController";
 import DocumentController from "../controllers/DocumentController";
 import InvoiceController from "../controllers/InvoiceController";
 import InvoiceTemporalDetailController from "../controllers/InvoiceTemporalDetailController";
+import MeasureController from "../controllers/MeassureController";
 import ProviderController from "../controllers/ProviderController";
 import RoleController from "../controllers/RoleController";
+import SubsidiaryController from "../controllers/SubsidiaryController";
 import TypeOfDischargeController from "../controllers/TypeOfDischageController";
 import UserController from "../controllers/UserController";
 import WharehouseController from "../controllers/WarehouseController";
@@ -28,6 +31,22 @@ export default (server) => {
     server.delete('/api/invoice/:id', IsProtected, InvoiceController.delete);
 
     /**
+     * Article
+     */
+    server.get('/api/article', IsProtected, ArticleController.getAll);
+    server.post('/api/article', IsProtected, ArticleController.insert);
+    server.put('/api/article/:id', IsProtected, ArticleController.update);
+    server.delete('/api/article/:id', IsProtected, ArticleController.delete);
+
+    /**
+     * Subsidiary
+     */
+    server.get('/api/subsidiary', IsProtected, SubsidiaryController.getAll);
+    server.post('/api/subsidiary', IsProtected, SubsidiaryController.insert);
+    server.put('/api/subsidiary/:id', IsProtected, SubsidiaryController.update);
+    server.delete('/api/subsidiary/:id', IsProtected, SubsidiaryController.delete);
+
+    /**
      * Temporal data detail for invoice
      */
     server.get('/api/invoice-temporal-detail', IsProtected, InvoiceTemporalDetailController.getAll);
@@ -39,9 +58,9 @@ export default (server) => {
      * Chilean commune
      */
     server.get('/api/commune', IsProtected, CommuneController.getAll);
-    server.post('/api/commune', IsProtected, CommuneController.insert);
-    server.put('/api/commune/:id', IsProtected, CommuneController.update);
-    server.delete('/api/commune/:id', IsProtected, CommuneController.delete);
+    server.post('/api/commune', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.put('/api/commune/:id', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.delete('/api/commune/:id', IsProtected, (req, res) => { return res.status(405).send('') });
 
     /**
      * Warehouse
@@ -111,7 +130,7 @@ export default (server) => {
      * Provider
      */
     server.get('/api/provider', IsProtected, ProviderController.getAll);
-    server.post('/api/provider', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.post('/api/provider', IsProtected, ProviderController.insert);
     server.put('/api/provider/:id', IsProtected, (req, res) => { return res.status(405).send('') });
     server.delete('/api/provider/:id', IsProtected, (req, res) => { return res.status(405).send('') });
 
@@ -122,6 +141,14 @@ export default (server) => {
     server.post('/api/role', IsProtected, (req, res) => { return res.status(405).send('') });
     server.put('/api/role/:id', IsProtected, (req, res) => { return res.status(405).send('') });
     server.delete('/api/role/:id', IsProtected, (req, res) => { return res.status(405).send('') });
+
+    /**
+     * Measure
+     */
+    server.get('/api/measure', IsProtected, MeasureController.getAll);
+    server.post('/api/measure', IsProtected, MeasureController.insert);
+    server.put('/api/measure/:id', IsProtected, MeasureController.update);
+    server.delete('/api/measure/:id', IsProtected, MeasureController.delete);
 
     /**
      * Type of discharge
