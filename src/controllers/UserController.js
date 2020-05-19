@@ -13,6 +13,10 @@ class UserController extends Controller {
         super(service);
         this.authentication = this.authentication.bind(this);
         this.getAllSubsidiary = this.getAllSubsidiary.bind(this);
+        this.getAllRelationUserInSubsidiary = this.getAllRelationUserInSubsidiary.bind(this);
+        this.insertRelationUserInSubsidiary = this.insertRelationUserInSubsidiary.bind(this);
+        this.getAllRelationUserInTypeOfSale = this.getAllRelationUserInTypeOfSale.bind(this);
+        this.insertRelationUserInTypeOfSale = this.insertRelationUserInTypeOfSale.bind(this);
         this.getMenu = this.getMenu.bind(this);
     }
 
@@ -28,6 +32,26 @@ class UserController extends Controller {
     async getAllSubsidiary(req, res) {
         const rut = JwtUtils.getUserRut(req.headers['access-token']);
         let response = await this.service.getAllSubsidiary(rut);
+        return res.status(response.statusCode).send(response.data);
+    }
+
+    async getAllRelationUserInSubsidiary(req, res) {
+        let response = await this.service.getAllRelationUserInSubsidiary(req.query);
+        return res.status(response.statusCode).send(response.data);
+    }
+
+    async insertRelationUserInSubsidiary(req, res) {
+        let response = await this.service.insertRelationUserInSubsidiary(req.body);
+        return res.status(response.statusCode).send(response.data);
+    }
+
+    async getAllRelationUserInTypeOfSale(req, res) {
+        let response = await this.service.getAllRelationUserInTypeOfSale(req.query);
+        return res.status(response.statusCode).send(response.data);
+    }
+
+    async insertRelationUserInTypeOfSale(req, res) {
+        let response = await this.service.insertRelationUserInTypeOfSale(req.body);
         return res.status(response.statusCode).send(response.data);
     }
 

@@ -1,15 +1,44 @@
 import Service from './Service';
-import Sequelize from "sequelize";
+import { Sequelize, Op } from "sequelize";
 import { sign } from "jsonwebtoken";
 import config from "../config/config";
+import RelationUserSubsidiaryModel from "../model/User_subsidiary.model";
+import SubsidiaryModel from "../model/Subsidiary.model";
+import RelationUserTypeOfSaleModel from "../model/User_typeOfSale.model";
+import TypeOfSaleModel from "../model/TypeOfSale.model";
 
 class UserService extends Service {
 
     constructor(model) {
         super(model);
+        this.update = this.update.bind(this);
         this.authentication = this.authentication.bind(this);
+        this.getAllRelationUserInSubsidiary = this.getAllRelationUserInSubsidiary.bind(this);
+        this.insertRelationUserInSubsidiary = this.insertRelationUserInSubsidiary.bind(this);
+        this.getAllRelationUserInTypeOfSale = this.getAllRelationUserInTypeOfSale.bind(this);
+        this.insertRelationUserInTypeOfSale = this.insertRelationUserInTypeOfSale.bind(this);
         this.getAllSubsidiary = this.getAllSubsidiary.bind(this);
         this.getMenu = this.getMenu.bind(this);
+    }
+
+    async update(id, data) {
+        try {
+            let item = await this.model.findByPk(data.rut);
+            if (!item)
+                throw new Error('Element not found');
+            await this.model.update(data, { where: { rut: data.rut } })
+            return {
+                error: false,
+                statusCode: 202,
+                item
+            };
+        } catch (error) {
+            return {
+                error: true,
+                statusCode: 500,
+                errors: error.errors
+            };
+        }
     }
 
     async authentication(rut, password) {
@@ -40,6 +69,136 @@ class UserService extends Service {
             statusCode: 401,
             message: 'Failed to authenticate',
             errors: ''
+        }
+    }
+
+    async getAllRelationUserInSubsidiary(query) {
+        let { skip, limit } = query;
+        let ids = [];
+
+        skip = skip ? Number(skip) : 0;
+        limit = limit ? Number(limit) : 10;
+
+        delete query.skip;
+        delete query.limit;
+        try {
+            let related = await RelationUserSubsidiaryModel.findAll({
+                where: query
+            });
+            related.forEach(item => {
+                ids.push(item.subsidiary_id)
+            });
+            const items = await SubsidiaryModel.findAll({
+                where: {
+                    id: {
+                        [Op.in]: ids
+                    }
+                }
+            });
+            return {
+                error: false,
+                statusCode: 200,
+                data: items
+            }
+        } catch (errors) {
+            return {
+                error: true,
+                statusCode: 500,
+                errors
+            }
+        }
+    }
+
+    async insertRelationUserInSubsidiary(newRelation) {
+        try {
+            const rut = newRelation.user_id;
+            RelationUserSubsidiaryModel.destroy({
+                where: {
+                    user_id: newRelation.user_id
+                }
+            });
+            const bulk = await RelationUserSubsidiaryModel.bulkCreate(newRelation.items);
+            return {
+                error: false,
+                statusCode: 200,
+                data: bulk
+            }
+        } catch (err) {
+            return {
+                error: true,
+                statusCode: 500,
+                errors: err.errors
+            }
+        }
+    }
+
+    async getAllRelationUserInTypeOfSale(query) {
+        let { skip, limit } = query;
+        let ids = [];
+
+        skip = skip ? Number(skip) : 0;
+        limit = limit ? Number(limit) : 10;
+
+        delete query.skip;
+        delete query.limit;
+        try {
+            let related = await RelationUserTypeOfSaleModel.findAll({
+                where: query
+            });
+            related.forEach(item => {
+                ids.push(item.sale_id)
+            });
+            const items = await TypeOfSaleModel.findAll({
+                where: {
+                    id: {
+                        [Op.in]: ids
+                    }
+                },
+                raw: true
+            });
+            for (let index = 0; index < items.length; index++) {
+                const relation = await RelationUserTypeOfSaleModel.findOne({
+                    where: {
+                        sale_id: items[index].id
+                    }
+                });
+                items[index].name.trim();
+                items[index].isPrimary = relation.getDataValue('isDefault');
+            };
+            return {
+                error: false,
+                statusCode: 200,
+                data: items
+            }
+        } catch (errors) {
+            return {
+                error: true,
+                statusCode: 500,
+                errors
+            }
+        }
+    }
+
+    async insertRelationUserInTypeOfSale(newRelation) {
+        try {
+            const rut = newRelation.user_id;
+            RelationUserSubsidiaryModel.destroy({
+                where: {
+                    user_id: newRelation.user_id
+                }
+            });
+            const bulk = await RelationUserSubsidiaryModel.bulkCreate(newRelation.items);
+            return {
+                error: false,
+                statusCode: 200,
+                data: bulk
+            }
+        } catch (err) {
+            return {
+                error: true,
+                statusCode: 500,
+                errors: err.errors
+            }
         }
     }
 

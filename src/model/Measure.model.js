@@ -8,22 +8,31 @@ module.exports = MeasureModel;
 
 MeasureModel.init({
     id: {
-        field: 'idTipoDocIn',
+        field: 'idMedida',
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
     name: {
-        field: 'descripcion',
+        field: 'nomMedida',
+        type: Sequelize.STRING(50),
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
+    plural_name: {
+        field: 'nomPlural',
         type: Sequelize.STRING(50)
     },
-    isActive: {
-        field: 'estado',
-        type: Sequelize.BOOLEAN
+    updatedAt: {
+        field: 'lastupdate',
+        type: Sequelize.DATE
     }
 }, {
     sequelize: config,
-    modelName: 'tipoDocIn',
+    modelName: 'medidas',
     freezeTableName: true,
-    timestamps: false
+    timestamps: true,
+    createdAt: false
 });

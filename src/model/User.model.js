@@ -11,15 +11,24 @@ UserModel.init({
         field: 'rut',
         type: Sequelize.STRING,
         primaryKey: true,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
     },
     firstName: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
     },
     lastName: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
     },
     secondLastName: {
         type: Sequelize.STRING,
@@ -41,11 +50,23 @@ UserModel.init({
     },
     userName: {
         type: Sequelize.STRING(50),
-        allowNull: false
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
     },
     email: {
         field: 'eMail',
-        type: Sequelize.STRING(256)
+        type: Sequelize.STRING(256),
+        validate: {
+            notEmpty: true,
+            isEmail: true
+        }
+    },
+    role: {
+        field: 'rol',
+        type: Sequelize.INTEGER,
+        allowNull: false
     }
 }, {
     sequelize: config,

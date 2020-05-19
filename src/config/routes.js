@@ -9,7 +9,7 @@ import RoleController from "../controllers/RoleController";
 import SubsidiaryController from "../controllers/SubsidiaryController";
 import TypeOfDischargeController from "../controllers/TypeOfDischageController";
 import UserController from "../controllers/UserController";
-import WharehouseController from "../controllers/WarehouseController";
+import WarehouseController from "../controllers/WarehouseController";
 import IsProtected from "./protected";
 
 export default (server) => {
@@ -65,10 +65,10 @@ export default (server) => {
     /**
      * Warehouse
      */
-    server.get('/api/warehouse', IsProtected, WharehouseController.getAll);
-    server.post('/api/warehouse', IsProtected, WharehouseController.insert);
-    server.put('/api/warehouse/:id', IsProtected, WharehouseController.update);
-    server.delete('/api/warehouse/:id', IsProtected, WharehouseController.delete);
+    server.get('/api/warehouse', IsProtected, WarehouseController.getAll);
+    server.post('/api/warehouse', IsProtected, WarehouseController.insert);
+    server.put('/api/warehouse/:id', IsProtected, WarehouseController.update);
+    server.delete('/api/warehouse/:id', IsProtected, WarehouseController.delete);
 
     /**
      * User
@@ -105,10 +105,10 @@ export default (server) => {
     /**
      * Warehouse for subsidiary
      */
-    server.get('/api/user/subsidiary/:subsidiaryId/warehouse', IsProtected, (req, res) => { return res.status(405).send('') });
-    server.post('/api/user/subsidiary/:subsidiaryId/warehouse', IsProtected, (req, res) => { return res.status(405).send('') });
-    server.put('/api/user/subsidiary/:subsidiaryId/warehouse/:id', IsProtected, (req, res) => { return res.status(405).send('') });
-    server.delete('/api/user/subsidiary/:subsidiaryId/warehouse/:id', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.get('/api/subsidiary/warehouse', IsProtected, WarehouseController.getBySubsidiary);
+    server.post('/api/subsidiary/warehouse', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.put('/api/subsidiary/warehouse/:id', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.delete('/api/subsidiary/warehouse/:id', IsProtected, (req, res) => { return res.status(405).send('') });
 
     /**
      * Family
@@ -157,5 +157,21 @@ export default (server) => {
     server.post('/api/type-of-discharge', IsProtected, (req, res) => { return res.status(405).send('') });
     server.put('/api/type-of-discharge/:id', IsProtected, (req, res) => { return res.status(405).send('') });
     server.delete('/api/type-of-discharge/:id', IsProtected, (req, res) => { return res.status(405).send('') });
+
+    /**
+     * Type of discharge
+     */
+    server.get('/api/relation-user-subsidiary', IsProtected, UserController.getAllRelationUserInSubsidiary);
+    server.post('/api/relation-user-subsidiary', IsProtected, UserController.insertRelationUserInSubsidiary);
+    server.put('/api/relation-user-subsidiary/:id', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.delete('/api/relation-user-subsidiary/:id', IsProtected, (req, res) => { return res.status(405).send('') });
+
+    /**
+     * Type of discharge
+     */
+    server.get('/api/relation-user-type-of-sale', IsProtected, UserController.getAllRelationUserInTypeOfSale);
+    server.post('/api/relation-user-type-of-sale', IsProtected, UserController.insertRelationUserInTypeOfSale);
+    server.put('/api/relation-user-type-of-sale/:id', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.delete('/api/relation-user-type-of-sale/:id', IsProtected, (req, res) => { return res.status(405).send('') });
 
 }

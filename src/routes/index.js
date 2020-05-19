@@ -14,7 +14,7 @@ const protectedRoute = express.Router();
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 
-protectedRoute.use((req, res, next) => {
+protectedRoute.use((req, res, next) => {Holas,
     const token = req.headers['access-token'];
     if (token) {
         jwt.verify(token, config.key().llave, (err, decoded) => {
