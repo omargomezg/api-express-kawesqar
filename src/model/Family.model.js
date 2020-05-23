@@ -1,14 +1,13 @@
 import { Model as _Model, INTEGER, CHAR, DATE, STRING, TINYINT, BOOLEAN } from 'sequelize';
 const config = require('../config/config').sequelize();
 const Model = _Model;
-import moment from 'moment';
 
-class InvoiceModel extends Model {
+class FamilyModel extends Model {
 }
 
-export default InvoiceModel;
+export default FamilyModel;
 
-InvoiceModel.init({
+FamilyModel.init({
     id: {
         field: 'idFamilia',
         type: INTEGER,

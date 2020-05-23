@@ -1,9 +1,7 @@
-import { Model as _Model, BOOLEAN, INTEGER, CHAR, DATE, STRING, TINYINT, NUMBER } from 'sequelize';
+import {BOOLEAN, CHAR, DATE, INTEGER, Model as _Model, NUMBER, STRING} from 'sequelize';
+
 const config = require('../config/config').sequelize();
-import Provider, { hasMany } from './Provider.model';
-import TypeOfDocument, { hasMany as _hasMany } from './TypeOfDocument.model';
 const Model = _Model;
-import moment from 'moment';
 
 class ArticleModel extends Model {
 }
@@ -33,8 +31,8 @@ ArticleModel.init({
             key: 'idMedida'
         }
     },
-    active: { field: 'estado', type: BOOLEAN, defaultValue: true },
-    alertStatus: { field: 'alerta', type: BOOLEAN },
+    active: {field: 'estado', type: BOOLEAN, defaultValue: true},
+    alertStatus: {field: 'alerta', type: BOOLEAN},
     user_expiration_date: {
         field: 'vencimiento',
         type: BOOLEAN
@@ -45,7 +43,7 @@ ArticleModel.init({
     comment: {
         field: 'notas', type: STRING
     },
-    profit: { field: 'ganancia', type: NUMBER },
+    profit: {field: 'ganancia', type: NUMBER},
     family: {
         field: 'idFamilia', type: INTEGER,
         allowNull: false,
@@ -54,10 +52,10 @@ ArticleModel.init({
             key: 'idFamilia'
         }
     },
-    bulkPrice: { field: 'precioGranel', type: INTEGER },
-    hasInventory: { field: 'usaInventario', type: BOOLEAN, defaultValue: false },
-    sheet: { field: 'folio', type: INTEGER },
-    updatedAt: { field: 'lastUpdate', type: DATE }
+    bulkPrice: {field: 'precioGranel', type: INTEGER},
+    hasInventory: {field: 'usaInventario', type: BOOLEAN, defaultValue: false},
+    sheet: {field: 'folio', type: INTEGER},
+    updatedAt: {field: 'lastUpdate', type: DATE}
 }, {
     sequelize: config,
     modelName: 'articulos',
