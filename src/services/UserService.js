@@ -12,6 +12,7 @@ class UserService extends Service {
     constructor(model) {
         super(model);
         this.update = this.update.bind(this);
+        this.insert = this.insert.bind(this);
         this.authentication = this.authentication.bind(this);
         this.getAllRelationUserInSubsidiary = this.getAllRelationUserInSubsidiary.bind(this);
         this.insertRelationUserInSubsidiary = this.insertRelationUserInSubsidiary.bind(this);
@@ -19,6 +20,42 @@ class UserService extends Service {
         this.insertRelationUserInTypeOfSale = this.insertRelationUserInTypeOfSale.bind(this);
         this.getAllSubsidiary = this.getAllSubsidiary.bind(this);
         this.getMenu = this.getMenu.bind(this);
+    }
+
+    async insert(data) {
+        const sequelize = config.sequelize();
+        try {
+            let { rut, userName, firstName, lastName, secondLastName, isActive, fono, email, role, salidaFactura, salidaEmpleados,
+                salidaVenta, idEgresoDefault, password } = data;
+            delete data.password;
+            delete data.username;
+            await sequelize.query(`
+            INSERT INTO cs_usuarios (rut, firstName, lastName, secondLastName, fono, eMail, clave, fechacreacion, userName, salidaVenta,
+                salidaFactura, salidaEmpleados, traspaso, credito, updated, rol)
+            VALUES ('${rut}', '${firstName}', '${lastName}', '${secondLastName}', '${fono}', '${email}', PwdEncrypt('${password}'), GETDATE(), '${userName}', ${this.getBooleanSql(salidaVenta)}, 
+                ${this.getBooleanSql(salidaFactura)}, ${this.getBooleanSql(salidaEmpleados)}, 0, 0, GETDATE(), ${role})`);
+
+            let item = await this.model.findByPk(rut);
+            if (item)
+                return {
+                    error: false,
+                    statusCode: 200,
+                    data: item
+                }
+        } catch (err) {
+            let isUnique = false;
+            if (err.errors) {
+                isUnique = err.errors.some(item => {
+                    return item.type === 'unique violation';
+                });
+            }
+            return {
+                error: true,
+                statusCode: isUnique ? 409 : 500,
+                message: err.errmsg || 'Not able to create item',
+                errors: err
+            }
+        }
     }
 
     async update(id, data) {
@@ -251,6 +288,10 @@ class UserService extends Service {
             }
         }
     }
+
+    getBooleanSql(status) {
+        return status ? 1 : 0;
+     }
 
 }
 

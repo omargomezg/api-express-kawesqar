@@ -1,5 +1,4 @@
 const express = require('express');
-const comunasRoutes = require('./comunas');
 const subsidiaryRouter = require('./sucursal');
 const userRouter = require('./usuario');
 const miAccountRouter = require('./miCuenta.router')
@@ -14,7 +13,7 @@ const protectedRoute = express.Router();
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 
-protectedRoute.use((req, res, next) => {Holas,
+protectedRoute.use((req, res, next) => {
     const token = req.headers['access-token'];
     if (token) {
         jwt.verify(token, config.key().llave, (err, decoded) => {
@@ -38,7 +37,6 @@ protectedRoute.use((req, res, next) => {Holas,
 
 const router = express.Router();
 
-router.use('/comuna', protectedRoute, comunasRoutes);
 router.use('/sucursal', protectedRoute, subsidiaryRouter);
 router.use('/usuario', protectedRoute, userRouter);
 router.use('/mi-cuenta', protectedRoute, miAccountRouter);

@@ -1,10 +1,9 @@
 import Service from './Service';
 
-class WharehouseService extends Service {
+class FamilyService extends Service {
     constructor(model) {
         super(model);
     }
-
 }
 
-export default WharehouseService;
+export default FamilyService;

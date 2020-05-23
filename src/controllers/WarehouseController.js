@@ -9,12 +9,6 @@ const warehouseService = new WharehouseService(
 class WarehouseController extends Controller {
     constructor(service) {
         super(service);
-        this.getBySubsidiary = this.getBySubsidiary.bind(this);
-    }
-
-    async getBySubsidiary(req, res) { 
-        const response = await warehouseService.getBySubsidiary(req.query);
-        return res.status(response.statusCode).send(response.data);
     }
 }
 

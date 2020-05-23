@@ -12,6 +12,7 @@ class UserController extends Controller {
     constructor(service) {
         super(service);
         this.authentication = this.authentication.bind(this);
+        this.insert = this.insert.bind(this);
         this.getAllSubsidiary = this.getAllSubsidiary.bind(this);
         this.getAllRelationUserInSubsidiary = this.getAllRelationUserInSubsidiary.bind(this);
         this.insertRelationUserInSubsidiary = this.insertRelationUserInSubsidiary.bind(this);

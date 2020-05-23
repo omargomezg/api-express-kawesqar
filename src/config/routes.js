@@ -1,6 +1,7 @@
 import ArticleController from "../controllers/ArticleController";
 import CommuneController from "../controllers/CommuneController";
 import DocumentController from "../controllers/DocumentController";
+import FamilyController from "../controllers/FamilyController";
 import InvoiceController from "../controllers/InvoiceController";
 import InvoiceTemporalDetailController from "../controllers/InvoiceTemporalDetailController";
 import MeasureController from "../controllers/MeassureController";
@@ -105,18 +106,34 @@ export default (server) => {
     /**
      * Warehouse for subsidiary
      */
-    server.get('/api/subsidiary/warehouse', IsProtected, WarehouseController.getBySubsidiary);
-    server.post('/api/subsidiary/warehouse', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.get('/api/subsidiary/warehouse', IsProtected, SubsidiaryController.getRelationWithWarehouse);
+    server.post('/api/subsidiary/warehouse', IsProtected, SubsidiaryController.insertRelationWithWarehouse);
     server.put('/api/subsidiary/warehouse/:id', IsProtected, (req, res) => { return res.status(405).send('') });
-    server.delete('/api/subsidiary/warehouse/:id', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.delete('/api/subsidiary/warehouse/:id', IsProtected, SubsidiaryController.deleteRelationWithWarehouse);
 
     /**
-     * Family
+     * Family for subsidiary
      */
-    server.get('/api/user/family', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.get('/api/subsidiary/family', IsProtected, SubsidiaryController.getRelationWithFamily);
+    server.post('/api/subsidiary/family', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.put('/api/subsidiary/family/:id', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.delete('/api/subsidiary/family/:id', IsProtected, SubsidiaryController.deleteRelationWithWarehouse);
+
+    /**
+     * Family for family
+     */
+    server.get('/api/user/family', (req, res) => { return res.status(405).send('') });
     server.post('/api/user/family', IsProtected, (req, res) => { return res.status(405).send('') });
     server.put('/api/user/family/:id', IsProtected, (req, res) => { return res.status(405).send('') });
     server.delete('/api/user/family/:id', IsProtected, (req, res) => { return res.status(405).send('') });
+
+    /**
+     * Familys
+     */
+    server.get('/api/family', IsProtected, IsProtected, FamilyController.getAll);
+    server.post('/api/family', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.put('/api/family/:id', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.delete('/api/family/:id', IsProtected, (req, res) => { return res.status(405).send('') });
 
     /**
      * Documents

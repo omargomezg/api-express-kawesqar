@@ -1,4 +1,4 @@
-import { Model as _Model, INTEGER, CHAR, DATE, STRING, TINYINT } from 'sequelize';
+import { Model as _Model, INTEGER, CHAR, DATE, STRING, TINYINT, BOOLEAN, NUMBER } from 'sequelize';
 import TypeOfDocument, { hasMany as _hasMany } from './TypeOfDocument.model';
 const Model = _Model;
 const config = require('../config/config').sequelize();
@@ -37,7 +37,11 @@ SubsidiaryModel.init({
         }
     },
     telephone: { field: 'telefono', type: STRING(50) },
-    fax: { field: 'fax', type: STRING(50) }
+    fax: { field: 'fax', type: STRING(50) },
+    legalRepresentative_rut: { field: 'rutRepLegal', type: STRING(12)},
+    legalRepresentative_name: { field: 'nombreRepLegal', type: STRING(50) },
+    cashRegister_isActive: { field: 'registroContado', type: BOOLEAN },
+    cashRegister_value: {field: 'numInicialRegContado', type: NUMBER, defaultValue: null}
 }, {
     sequelize: config,
     modelName: 'cs_sucursales',
