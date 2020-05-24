@@ -6,6 +6,7 @@ import RelationUserSubsidiaryModel from "../model/User_subsidiary.model";
 import SubsidiaryModel from "../model/Subsidiary.model";
 import RelationUserTypeOfSaleModel from "../model/User_typeOfSale.model";
 import TypeOfSaleModel from "../model/TypeOfSale.model";
+import TurnModel from "../model/Turn.model";
 
 class UserService extends Service {
 
@@ -20,6 +21,7 @@ class UserService extends Service {
         this.insertRelationUserInTypeOfSale = this.insertRelationUserInTypeOfSale.bind(this);
         this.getAllSubsidiary = this.getAllSubsidiary.bind(this);
         this.getMenu = this.getMenu.bind(this);
+        this.getAllTurn = this.getAllTurn.bind(this);
     }
 
     async insert(data) {
@@ -106,6 +108,34 @@ class UserService extends Service {
             statusCode: 401,
             message: 'Failed to authenticate',
             errors: ''
+        }
+    }
+
+
+    async getAllTurn(query) {
+        let { skip, limit } = query;
+
+        skip = skip ? Number(skip) : 0;
+        limit = limit ? Number(limit) : 10;
+
+        delete query.skip;
+        delete query.limit;
+        try {
+            const items = await TurnModel.findAll({
+                where: query,
+                limit: limit
+            });
+            return {
+                error: false,
+                statusCode: 200,
+                data: items
+            }
+        } catch (errors) {
+            return {
+                error: true,
+                statusCode: 500,
+                errors
+            }
         }
     }
 

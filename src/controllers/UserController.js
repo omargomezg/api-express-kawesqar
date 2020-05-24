@@ -1,7 +1,7 @@
 import Controller from "./Controller";
 import UserService from "../services/UserService";
 import User from "../model/User.model";
-import Utils from "../Utils/Rut";
+import Utils from "../utils/Rut";
 import JwtUtils from "../services/jwt";
 
 const userService = new UserService(
@@ -19,6 +19,7 @@ class UserController extends Controller {
         this.getAllRelationUserInTypeOfSale = this.getAllRelationUserInTypeOfSale.bind(this);
         this.insertRelationUserInTypeOfSale = this.insertRelationUserInTypeOfSale.bind(this);
         this.getMenu = this.getMenu.bind(this);
+        this.getAllTurn = this.getAllTurn.bind(this);
     }
 
     async authentication(req, res) {
@@ -28,6 +29,12 @@ class UserController extends Controller {
         }
         let response = await this.service.authentication(param.rut, param.password);
         return res.status(response.statusCode).send({token: response.data});
+    }
+
+    async getAllTurn(req, res) {
+        const rut = JwtUtils.getUserRut(req.headers['access-token']);
+        let response = await this.service.getAllTurn(rut);
+        return res.status(response.statusCode).send(response.data);
     }
 
     async getAllSubsidiary(req, res) {

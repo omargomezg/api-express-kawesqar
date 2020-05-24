@@ -88,6 +88,14 @@ export default (server) => {
     server.delete('/api/user/menu/list/:id', IsProtected, (req, res) => { return res.status(405).send('') });
 
     /**
+     * User turn
+     */
+    server.get('/api/user/turn', IsProtected, UserController.getMenu);
+    server.post('/api/user/turn', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.put('/api/user/turn/:id', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.delete('/api/user/turn/:id', IsProtected, (req, res) => { return res.status(405).send('') });
+
+    /**
      * Warehouse for user
      */
     server.get('/api/user/warehouse', IsProtected, (req, res) => { return res.status(405).send('') });

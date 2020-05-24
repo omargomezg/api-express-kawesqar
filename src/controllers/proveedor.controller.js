@@ -1,7 +1,7 @@
 const config = require("../config/config");
 const sql = require("mssql");
 const Provider = require('../model/Provider.model');
-const utilsRut = require('../Utils/Rut');
+const utilsRut = require('../utils/Rut');
 
 module.exports = {
 
