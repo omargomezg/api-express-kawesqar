@@ -20,11 +20,13 @@
     "memory-cache": "^0.2.0",
     "moment": "^2.25.3",
     "mssql": "^6.2.0",
+    "node-excel-export": "^1.4.4",
     "sequelize": "^5.21.7",
     "slugify": "^1.4.0",
     "tedious": "^8.3.0"
   },
   "devDependencies": {
+    "@babel/node": "^7.8.7",
     "@babel/runtime": "^7.9.6",
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.6",

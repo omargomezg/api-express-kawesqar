@@ -32,6 +32,14 @@ export default (server) => {
     server.delete('/api/invoice/:id', IsProtected, InvoiceController.delete);
 
     /**
+     * Invoices download
+     */
+    server.get('/api/invoice/download', InvoiceController.download);
+    server.post('/api/invoice/download', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.put('/api/invoice/download/:id', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.delete('/api/invoice/download/:id', IsProtected, (req, res) => { return res.status(405).send('') });
+
+    /**
      * Article
      */
     server.get('/api/article', IsProtected, ArticleController.getAll);

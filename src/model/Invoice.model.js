@@ -1,5 +1,6 @@
 import {CHAR, DATE, INTEGER, Model as _Model, STRING, TINYINT} from 'sequelize';
 import moment from 'moment';
+import InvoiceDetailModel from "./InvoiceDetail.model";
 import ProviderModel from "./Provider.model";
 import UserModel from "./User.model";
 import TypeOfDocumentModel from "./TypeOfDocument.model";
@@ -25,13 +26,13 @@ InvoiceModel.init({
     emission_date: {
         field: 'Fecha', type: DATE,
         get() {
-            return moment(this.getDataValue('Fecha')).format('DD-MM-YYYY');
+            return moment(this.getDataValue('emission_date')).format('DD-MM-YYYY');
         }
     },
     createdAt: {
         field: 'fechaIngreso', type: DATE,
         get() {
-            return moment(this.getDataValue('fechaIngreso')).format('DD-MM-YYYY');
+            return moment(this.getDataValue('createdAt')).format('DD-MM-YYYY');
         }
     },
     provider_id: {
@@ -74,4 +75,5 @@ InvoiceModel.init({
 
 InvoiceModel.belongsTo(ProviderModel, {foreignKey: 'provRut', as: 'provider'});
 InvoiceModel.belongsTo(UserModel, {foreignKey: 'rutUsuario', as: 'user'});
-InvoiceModel.belongsTo(TypeOfDocumentModel, {foreignKey: 'idTipoDocIn', as: 'document'})
+InvoiceModel.belongsTo(TypeOfDocumentModel, { foreignKey: 'idTipoDocIn', as: 'document' })
+InvoiceModel.hasMany(InvoiceDetailModel, {foreignKey: 'idFact', as: 'detail'})
