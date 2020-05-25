@@ -5,8 +5,10 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js",
-    "dev": "nodemon --watch src src/server.js"
+    "start": "babel-node build/index.js",
+    "prebuild": "rm -rf build/*",
+    "dev:start": "clear; nodemon --exec babel-node src/index.js",
+    "build": "babel ./src --out-dir build"
   },
   "author": "",
   "license": "ISC",
@@ -16,11 +18,23 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "memory-cache": "^0.2.0",
-    "mssql": "^6.1.0"
+    "moment": "^2.25.3",
+    "mssql": "^6.2.0",
+    "node-excel-export": "^1.4.4",
+    "sequelize": "^5.21.7",
+    "slugify": "^1.4.0",
+    "tedious": "^8.3.0"
   },
   "devDependencies": {
+    "@babel/node": "^7.8.7",
+    "@babel/runtime": "^7.9.6",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.6",
+    "@babel/plugin-transform-runtime": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
     "@types/express": "^4.17.6",
     "@types/mssql": "^6.0.0",
+    "babel-loader": "^8.1.0",
     "nodemon": "^2.0.3"
   }
 }

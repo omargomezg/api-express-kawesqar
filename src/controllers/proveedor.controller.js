@@ -1,5 +1,7 @@
 const config = require("../config/config");
 const sql = require("mssql");
+const Provider = require('../model/Provider.model');
+const utilsRut = require('../utils/Rut');
 
 module.exports = {
 
@@ -44,5 +46,17 @@ module.exports = {
         }).catch(err => {
             resp.status(500).send("Escribre error" + err);
         });
+    },
+    save: async (req, res) => {
+        req.body.rut = utilsRut.formatRut(req.body.rut);
+        try {
+            let find = await Provider.findOne({where: {rut: req.body.rut}});
+            if (find === null) {
+                find = await Provider.create(req.body);
+            }
+            return res.json(find);
+        } catch (e) {
+            res.status(500).send(e);
+        }
     }
 };

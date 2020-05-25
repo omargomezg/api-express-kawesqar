@@ -45,7 +45,6 @@ function getSucursales(req, resp) {
 
 function getSubsidiaryByUserRut(req, resp, next) {
     const rut = jwtUtils.getUserRut(req.headers['access-token']);
-    console.log(rut);
     sql
         .connect(config.config())
         .then(pool => {

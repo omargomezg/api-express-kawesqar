@@ -1,5 +1,6 @@
 const config = require("../config/config");
 const sql = require("mssql");
+const invoice = require('../model/invoice.model');
 
 module.exports = {
     getAll: (estado, callback) => {
@@ -31,8 +32,16 @@ module.exports = {
                 callback(err);
             });
     },
-    save: (rut, param) => {
-        sql
+    save: (req, res) => {
+        invoice.findOrCreate({
+            where: {
+                document_number: 8350372,
+                supplier_id: '96670840-9'
+            }
+        }).then(result => {
+            console.log(result);
+        });
+        /*sql
             .connect(config.config())
             .then(pool => {
                 return pool.request()
@@ -54,6 +63,6 @@ module.exports = {
             })
             .catch(err => {
                 callback(err);
-            });
+            });*/
     }
 };
