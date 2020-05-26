@@ -44,10 +44,10 @@ InvoiceModel.init({
             key: 'provRut'
         }
     },
-    state: {field: 'estadoUso', type: STRING(50)},
-    tax: {field: 'valImpuesto', type: INTEGER},
-    comment: {field: 'notas', type: STRING(255)},
-    subsidiary_id: {field: 'sucursal', type: TINYINT},
+    state: { field: 'estadoUso', type: STRING(50) },
+    tax: { field: 'valImpuesto', type: INTEGER },
+    comment: { field: 'notas', type: STRING(255) },
+    subsidiary_id: { field: 'sucursal', type: TINYINT },
     user_id: {
         field: 'rutUsuario',
         type: STRING(12),
@@ -71,7 +71,7 @@ InvoiceModel.init({
     freezeTableName: true,
     timestamps: true,
     updatedAt: false
-})
+});
 
 InvoiceModel.belongsTo(ProviderModel, {foreignKey: 'provRut', as: 'provider'});
 InvoiceModel.belongsTo(UserModel, {foreignKey: 'rutUsuario', as: 'user'});

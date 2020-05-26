@@ -24,7 +24,8 @@ class Service {
         delete query.limit;
         try {
             let items = await this.model.findAll({
-                where: query
+                where: query,
+                limit: limit
             });
             return {
                 error: false,

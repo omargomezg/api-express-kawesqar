@@ -1,6 +1,7 @@
 import {BOOLEAN, CHAR, DATE, INTEGER, Model as _Model, NUMBER, STRING} from 'sequelize';
-
+import MeasureModel from './Measure.model';
 const config = require('../config/config').sequelize();
+
 const Model = _Model;
 
 class ArticleModel extends Model {
@@ -22,7 +23,7 @@ ArticleModel.init({
         field: 'nomArticulo',
         type: CHAR(10)
     },
-    measure: {
+    measure_id: {
         field: 'idMedida',
         type: INTEGER,
         allowNull: false,
@@ -31,9 +32,9 @@ ArticleModel.init({
             key: 'idMedida'
         }
     },
-    active: {field: 'estado', type: BOOLEAN, defaultValue: true},
-    alertStatus: {field: 'alerta', type: BOOLEAN},
-    user_expiration_date: {
+    active: { field: 'estado', type: BOOLEAN, defaultValue: true },
+    alertStatus: { field: 'alerta', type: BOOLEAN },
+    use_expiration_date: {
         field: 'vencimiento',
         type: BOOLEAN
     },
@@ -43,7 +44,7 @@ ArticleModel.init({
     comment: {
         field: 'notas', type: STRING
     },
-    profit: {field: 'ganancia', type: NUMBER},
+    profit: { field: 'ganancia', type: NUMBER },
     family: {
         field: 'idFamilia', type: INTEGER,
         allowNull: false,
@@ -52,14 +53,16 @@ ArticleModel.init({
             key: 'idFamilia'
         }
     },
-    bulkPrice: {field: 'precioGranel', type: INTEGER},
-    hasInventory: {field: 'usaInventario', type: BOOLEAN, defaultValue: false},
-    sheet: {field: 'folio', type: INTEGER},
-    updatedAt: {field: 'lastUpdate', type: DATE}
+    bulkPrice: { field: 'precioGranel', type: INTEGER },
+    hasInventory: { field: 'usaInventario', type: BOOLEAN, defaultValue: false },
+    sheet: { field: 'folio', type: INTEGER },
+    updatedAt: { field: 'lastUpdate', type: DATE }
 }, {
     sequelize: config,
     modelName: 'articulos',
     freezeTableName: true,
     timestamps: true,
     createdAt: false
-})
+});
+
+ArticleModel.belongsTo(MeasureModel, { foreignKey: 'idMedida', as : 'measure'});
