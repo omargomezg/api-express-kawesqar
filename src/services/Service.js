@@ -23,9 +23,10 @@ class Service {
         delete query.skip;
         delete query.limit;
         try {
-            let items = await this.model.findAll({
+            let items = await this.model.findAndCountAll({
                 where: query,
-                limit: limit
+                limit: limit,
+                offset: skip,
             });
             return {
                 error: false,
@@ -69,9 +70,11 @@ class Service {
     async update(id, data) {
         try {
             let item = await this.model.findByPk(id);
-            if (!item)
+            if (!item) {
                 throw new Error('Element not found');
-            await this.model.update(data, { where: { id: id } })
+            }
+            await this.model.update(data, { where: { id: id } });
+            item = await this.model.findByPk(id);
             return {
                 error: false,
                 statusCode: 202,

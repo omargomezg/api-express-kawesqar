@@ -24,14 +24,13 @@ class SubsidiaryService extends Service {
         delete query.skip;
         delete query.limit;
         try {
-            let ids = [];
             const related = await Subsidiary_WarehouseModel.findAll({
                 attributes: ['id', 'state'],
-                where: query, include: [{ model: WarehouseModel, as: 'warehouse' }, { model: Subsidiary, as: 'subsidiary' }]
+                where: query,
+                limit: limit,
+                offset: skip,
+                include: [{ model: WarehouseModel, as: 'warehouse' }, { model: Subsidiary, as: 'subsidiary' }]
             });
-            // related.forEach(item => {
-            //     ids.push(item.subsidiary_id)
-            // });
             return {
                 error: false,
                 statusCode: 200,
