@@ -15,7 +15,7 @@ InvoiceDetailModel.init({
         autoIncrement: true,
     },
     invoice_id: { field: 'idFact', type: Sequelize.INTEGER, allowNull: false, references: { model: 'facturas', key: 'idFact' } },
-    article_id: { field: 'idArticulo', type: Sequelize.STRING, allowNull: false, references: { model: 'articulos', key: 'idArticulo' } },
+    article_id: { field: 'idArticulo', type: Sequelize.STRING(50), allowNull: false, references: { model: 'articulos', key: 'idArticulo' } },
     amount: { field: 'valUnitario', type: Sequelize.NUMBER, allowNull: false },
     quantity: { field: 'cantidad', type: Sequelize.NUMBER, allowNull: false }
 }, {
