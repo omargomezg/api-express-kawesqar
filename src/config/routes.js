@@ -3,6 +3,7 @@ import CommuneController from "../controllers/CommuneController";
 import DocumentController from "../controllers/DocumentController";
 import FamilyController from "../controllers/FamilyController";
 import InvoiceController from "../controllers/InvoiceController";
+import InvoiceDetailController from "../controllers/InvoiceDetailController";
 import InvoiceTemporalDetailController from "../controllers/InvoiceTemporalDetailController";
 import MeasureController from "../controllers/MeassureController";
 import ProviderController from "../controllers/ProviderController";
@@ -54,6 +55,14 @@ export default (server) => {
     server.post('/api/subsidiary', IsProtected, SubsidiaryController.insert);
     server.put('/api/subsidiary/:id', IsProtected, SubsidiaryController.update);
     server.delete('/api/subsidiary/:id', IsProtected, SubsidiaryController.delete);
+
+    /**
+     * Temporal data detail for invoice
+     */
+    server.get('/api/invoice-detail', IsProtected, InvoiceDetailController.getAll);
+    server.post('/api/invoice-detail', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.put('/api/invoice-detail/:id', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.delete('/api/invoice-detail/:id', IsProtected, (req, res) => { return res.status(405).send('') });
 
     /**
      * Temporal data detail for invoice
@@ -131,7 +140,7 @@ export default (server) => {
      * Family for subsidiary
      */
     server.get('/api/subsidiary/family', IsProtected, SubsidiaryController.getRelationWithFamily);
-    server.post('/api/subsidiary/family', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.post('/api/subsidiary/family', IsProtected, SubsidiaryController.insertRelationWithFamily);
     server.put('/api/subsidiary/family/:id', IsProtected, (req, res) => { return res.status(405).send('') });
     server.delete('/api/subsidiary/family/:id', IsProtected, SubsidiaryController.deleteRelationWithWarehouse);
 

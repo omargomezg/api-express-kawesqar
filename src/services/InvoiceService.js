@@ -25,9 +25,12 @@ class InvoiceService extends Service {
         delete query.skip;
         delete query.limit;
         try {
-            let items = await this.model.findAll({
+            let items = await this.model.findAndCountAll({
                 limit: limit,
                 where: query,
+                distinct: true,
+                offset: skip,
+                order: [['emission_date', 'DESC']],
                 include: [
                     { model: ProviderModel, as: 'provider' },
                     { model: UserModel, as: 'user' },

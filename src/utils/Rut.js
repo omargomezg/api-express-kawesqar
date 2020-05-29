@@ -1,3 +1,8 @@
+/**
+ * @licence
+ * Copyright (c) 2020 Hardnets Chile Spa.
+ */
+
 module.exports = {
     formatRut: (rut) => {
         var actual = rut.replace(/^0+/, "");

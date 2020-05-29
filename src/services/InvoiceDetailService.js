@@ -1,27 +1,28 @@
 import Service from './Service';
-import MeasureModel from '../model/Measure.model';
+import { ArticleModel } from "../model/index";
 
-class ArticleService extends Service {
+class InvoiceDetailService extends Service {
     constructor(model) {
         super(model);
         this.getAll = this.getAll.bind(this);
     }
 
     async getAll(query) {
-        let {skip, limit} = query;
-
-        skip = skip ? Number(skip) : 0;
-        limit = limit ? Number(limit) : 10;
-
-        delete query.skip;
-        delete query.limit;
         try {
+            console.log(query);
+            let { skip, limit } = query;
+
+            skip = skip ? Number(skip) : 0;
+            limit = limit ? Number(limit) : 10;
+
+            delete query.skip;
+            delete query.limit;
             let items = await this.model.findAndCountAll({
                 where: query,
                 limit: limit,
                 offset: skip,
                 include: [
-                    {model: MeasureModel, as: 'measure'}
+                    { model: ArticleModel, as: 'article' }
                 ]
             });
             return {
@@ -39,4 +40,4 @@ class ArticleService extends Service {
     }
 }
 
-export default ArticleService;
+export default InvoiceDetailService;

@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const config = require('../config/config').sequelize();
 const Model = Sequelize.Model;
+import ArticleModel from '../model/Article.model'
 
 class InvoiceDetailModel extends Model {
 }
@@ -26,3 +27,4 @@ InvoiceDetailModel.init({
     initialAutoIncrement: false
 });
 
+InvoiceDetailModel.belongsTo(ArticleModel, { foreignKey: 'idArticulo', as: 'article'})

@@ -11,6 +11,7 @@ class SubsidiaryService extends Service {
         super(model);
         this.getRelationWithWarehouse = this.getRelationWithWarehouse.bind(this);
         this.insertRelationWithWarehouse = this.insertRelationWithWarehouse.bind(this);
+        this.insertRelationWithFamily = this.insertRelationWithFamily.bind(this);
         this.deleteRelationWithWarehouse = this.deleteRelationWithWarehouse.bind(this);
         this.getRelationWithFamily = this.getRelationWithFamily.bind(this);
     }
@@ -45,10 +46,9 @@ class SubsidiaryService extends Service {
         }
     }
 
-
     async insertRelationWithWarehouse(data) {
         try {
-            Subsidiary_WarehouseModel.destroy({
+            await Subsidiary_WarehouseModel.destroy({
                 where: {
                     subsidiary_id: data.subsidiary_id
                 }
@@ -75,6 +75,35 @@ class SubsidiaryService extends Service {
             }
         }
     }
+
+    async insertRelationWithFamily(data) {
+        try {
+            await Subsidiary_FamilyModel.destroy({
+                where: {
+                    subsidiary_id: data.subsidiary_id
+                }
+            });
+            const bulk = await Subsidiary_FamilyModel.bulkCreate(data.items);
+            if (bulk)
+                return {
+                    error: false,
+                    statusCode: 200,
+                    data: bulk
+                }
+        } catch (err) {
+            let isUnique = false;
+            if (err.errors) {
+                isUnique = err.errors.some(item => {
+                    return item.type === 'unique violation';
+                });
+            }
+            return {
+                error: true,
+                statusCode: isUnique ? 409 : 500,
+                message: err.errmsg || 'Not able to create item',
+                errors: err
+            }
+        } }
 
     async deleteRelationWithWarehouse(id) {
         try {

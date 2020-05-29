@@ -13,6 +13,7 @@ class SubsidiaryController extends Controller {
         this.insertRelationWithWarehouse = this.insertRelationWithWarehouse.bind(this);
         this.deleteRelationWithWarehouse = this.deleteRelationWithWarehouse.bind(this);
         this.getRelationWithFamily = this.getRelationWithFamily.bind(this);
+        this.insertRelationWithFamily = this.insertRelationWithFamily.bind(this);
     }
 
     async getRelationWithWarehouse(req, res) {
@@ -20,9 +21,14 @@ class SubsidiaryController extends Controller {
         return res.status(response.statusCode).send(response.data);
     }
 
-
     async insertRelationWithWarehouse(req, res) {
         let response = await this.service.insertRelationWithWarehouse(req.body);
+        if (response.error) return res.status(response.statusCode).send(response.errors);
+        return res.status(201).send(response.data);
+    }
+
+    async insertRelationWithFamily(req, res) {
+        let response = await this.service.insertRelationWithFamily(req.body);
         if (response.error) return res.status(response.statusCode).send(response.errors);
         return res.status(201).send(response.data);
     }
