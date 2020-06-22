@@ -1,6 +1,6 @@
 import Service from './Service';
-import { Sequelize, Op } from "sequelize";
-import { sign } from "jsonwebtoken";
+import {Op, Sequelize} from "sequelize";
+import {sign} from "jsonwebtoken";
 import config from "../config/config";
 import RelationUserSubsidiaryModel from "../model/User_subsidiary.model";
 import SubsidiaryModel from "../model/Subsidiary.model";
@@ -22,13 +22,57 @@ class UserService extends Service {
         this.getAllSubsidiary = this.getAllSubsidiary.bind(this);
         this.getMenu = this.getMenu.bind(this);
         this.getAllTurn = this.getAllTurn.bind(this);
+        this.updatePassword = this.updatePassword.bind(this);
+    }
+
+    async updatePassword(jwtRut, body) {
+        const sequelize = config.sequelize();
+        try {
+            if (jwtRut !== body.rut) {
+                throw new Error('Json web token rut is not correct whit body rut');
+            }
+            let item = await this.model.findOne({
+                where: {
+                    rut: jwtRut
+                }
+            });
+            if (!item) {
+                throw new Error('Element not found');
+            }
+            const getUser = await sequelize
+                .query(`SELECT rut from dbo.cs_usuarios WHERE rut = '${jwtRut}' and PwdCompare('${body.oldPassword}', clave) = 1;`);
+            if (getUser[0][0] === undefined) {
+                return {
+                    error: false,
+                    statusCode: 200,
+                    data: {message: 'Old password cannot match'}
+                };
+            }
+            await sequelize
+                .query(`UPDATE dbo.cs_usuarios SET clave = PwdEncrypt('${body.password}')
+                                            WHERE rut = '${jwtRut}' and PwdCompare('${body.oldPassword}', clave) = 1;`);
+            return {
+                error: false,
+                statusCode: 202,
+                data: {message: 'Password has updated'}
+            };
+        } catch (error) {
+            console.log(error)
+            return {
+                error: true,
+                statusCode: 500,
+                data: {message: error.toString()}
+            };
+        }
     }
 
     async insert(data) {
         const sequelize = config.sequelize();
         try {
-            let { rut, userName, firstName, lastName, secondLastName, isActive, fono, email, role, salidaFactura, salidaEmpleados,
-                salidaVenta, idEgresoDefault, password } = data;
+            let {
+                rut, userName, firstName, lastName, secondLastName, isActive, fono, email, role, salidaFactura, salidaEmpleados,
+                salidaVenta, idEgresoDefault, password
+            } = data;
             delete data.password;
             delete data.username;
             await sequelize.query(`
@@ -65,7 +109,7 @@ class UserService extends Service {
             let item = await this.model.findByPk(data.rut);
             if (!item)
                 throw new Error('Element not found');
-            await this.model.update(data, { where: { rut: data.rut } })
+            await this.model.update(data, {where: {rut: data.rut}})
             return {
                 error: false,
                 statusCode: 202,
@@ -113,7 +157,7 @@ class UserService extends Service {
 
 
     async getAllTurn(query) {
-        let { skip, limit } = query;
+        let {skip, limit} = query;
 
         skip = skip ? Number(skip) : 0;
         limit = limit ? Number(limit) : 10;
@@ -140,7 +184,7 @@ class UserService extends Service {
     }
 
     async getAllRelationUserInSubsidiary(query) {
-        let { skip, limit } = query;
+        let {skip, limit} = query;
         let ids = [];
 
         skip = skip ? Number(skip) : 0;
@@ -200,7 +244,7 @@ class UserService extends Service {
     }
 
     async getAllRelationUserInTypeOfSale(query) {
-        let { skip, limit } = query;
+        let {skip, limit} = query;
         let ids = [];
 
         skip = skip ? Number(skip) : 0;
@@ -231,7 +275,8 @@ class UserService extends Service {
                 });
                 items[index].name.trim();
                 items[index].isPrimary = relation.getDataValue('isDefault');
-            };
+            }
+            ;
             return {
                 error: false,
                 statusCode: 200,
@@ -321,7 +366,7 @@ class UserService extends Service {
 
     getBooleanSql(status) {
         return status ? 1 : 0;
-     }
+    }
 
 }
 

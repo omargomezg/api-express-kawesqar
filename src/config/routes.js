@@ -97,6 +97,14 @@ export default (server) => {
     server.delete('/api/user/:id', IsProtected, UserController.delete);
 
     /**
+     * User password
+     */
+    server.get('/api/user/password', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.post('/api/user/password', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.put('/api/user/password/:rut', IsProtected, UserController.updatePassword);
+    server.delete('/api/user/password/:rut', IsProtected, (req, res) => { return res.status(405).send('') });
+
+    /**
      * User menu
      */
     server.get('/api/user/menu/list/:id', IsProtected, UserController.getMenu);
@@ -153,7 +161,7 @@ export default (server) => {
     server.delete('/api/user/family/:id', IsProtected, (req, res) => { return res.status(405).send('') });
 
     /**
-     * Familys
+     * Families
      */
     server.get('/api/family', IsProtected, IsProtected, FamilyController.getAll);
     server.post('/api/family', IsProtected, (req, res) => { return res.status(405).send('') });

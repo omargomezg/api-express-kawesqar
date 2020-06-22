@@ -18,7 +18,7 @@ RoleModel.init({
     isActive: { field: 'estado', type: Sequelize.BOOLEAN },
     canSell: { field: 'accesoVenta', type: Sequelize.BOOLEAN },
     maxDiscount: { field: 'valorDescuento', type: Sequelize.INTEGER },
-    canAccesADminSell: { field: 'ventAdmin', type: Sequelize.BOOLEAN },
+    canAccessAdminSell: { field: 'ventAdmin', type: Sequelize.BOOLEAN },
     isDefault: { field: 'isDefault', type: Sequelize.BOOLEAN }
 }, {
     sequelize: config,

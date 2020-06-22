@@ -20,6 +20,13 @@ class UserController extends Controller {
         this.insertRelationUserInTypeOfSale = this.insertRelationUserInTypeOfSale.bind(this);
         this.getMenu = this.getMenu.bind(this);
         this.getAllTurn = this.getAllTurn.bind(this);
+        this.updatePassword = this.updatePassword.bind(this);
+    }
+
+    async updatePassword(req, res) {
+        const rut = JwtUtils.getUserRut(req.headers['access-token']);
+        let response = await this.service.updatePassword(rut, req.body);
+        return res.status(response.statusCode).send(response.data);
     }
 
     async authentication(req, res) {

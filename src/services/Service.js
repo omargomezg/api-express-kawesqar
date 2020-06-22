@@ -18,7 +18,7 @@ class Service {
         let { skip, limit } = query;
 
         skip = skip ? Number(skip) : 0;
-        limit = limit ? Number(limit) : 10;
+        limit = limit ? Number(limit) : 500;
 
         delete query.skip;
         delete query.limit;
