@@ -16,6 +16,7 @@ class UserController extends Controller {
         this.getAllSubsidiary = this.getAllSubsidiary.bind(this);
         this.getAllRelationUserInSubsidiary = this.getAllRelationUserInSubsidiary.bind(this);
         this.insertRelationUserInSubsidiary = this.insertRelationUserInSubsidiary.bind(this);
+        this.updateRelationUserInSubsidiary = this.updateRelationUserInSubsidiary.bind(this);
         this.getAllRelationUserInTypeOfSale = this.getAllRelationUserInTypeOfSale.bind(this);
         this.insertRelationUserInTypeOfSale = this.insertRelationUserInTypeOfSale.bind(this);
         this.getMenu = this.getMenu.bind(this);
@@ -57,6 +58,11 @@ class UserController extends Controller {
 
     async insertRelationUserInSubsidiary(req, res) {
         let response = await this.service.insertRelationUserInSubsidiary(req.body);
+        return res.status(response.statusCode).send(response.data);
+    }
+
+    async updateRelationUserInSubsidiary(req, res) {
+        let response = await this.service.updateRelationUserInSubsidiary(req.body);
         return res.status(response.statusCode).send(response.data);
     }
 

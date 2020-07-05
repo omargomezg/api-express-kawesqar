@@ -17,6 +17,7 @@ class UserService extends Service {
         this.authentication = this.authentication.bind(this);
         this.getAllRelationUserInSubsidiary = this.getAllRelationUserInSubsidiary.bind(this);
         this.insertRelationUserInSubsidiary = this.insertRelationUserInSubsidiary.bind(this);
+        this.updateRelationUserInSubsidiary = this.updateRelationUserInSubsidiary.bind(this);
         this.getAllRelationUserInTypeOfSale = this.getAllRelationUserInTypeOfSale.bind(this);
         this.insertRelationUserInTypeOfSale = this.insertRelationUserInTypeOfSale.bind(this);
         this.getAllSubsidiary = this.getAllSubsidiary.bind(this);
@@ -188,28 +189,24 @@ class UserService extends Service {
         let ids = [];
 
         skip = skip ? Number(skip) : 0;
-        limit = limit ? Number(limit) : 10;
+        limit = limit ? Number(limit) : 300;
 
         delete query.skip;
         delete query.limit;
         try {
             let related = await RelationUserSubsidiaryModel.findAll({
-                where: query
-            });
-            related.forEach(item => {
-                ids.push(item.subsidiary_id)
-            });
-            const items = await SubsidiaryModel.findAll({
-                where: {
-                    id: {
-                        [Op.in]: ids
-                    }
-                }
+                attributes: ['id', 'isActive', 'isSelected', 'user_id'],
+                where: query,
+                limit: limit,
+                offset: skip,
+                include: [
+                    {model: SubsidiaryModel, as: 'subsidiary'}
+                ]
             });
             return {
                 error: false,
                 statusCode: 200,
-                data: items
+                data: related
             }
         } catch (errors) {
             return {
@@ -221,25 +218,60 @@ class UserService extends Service {
     }
 
     async insertRelationUserInSubsidiary(newRelation) {
+        let newObject = [];
         try {
-            const rut = newRelation.user_id;
-            RelationUserSubsidiaryModel.destroy({
-                where: {
-                    user_id: newRelation.user_id
-                }
-            });
-            const bulk = await RelationUserSubsidiaryModel.bulkCreate(newRelation.items);
+            for (const relation of newRelation.items) {
+                const obj = await RelationUserSubsidiaryModel.findOne({
+                    where: {
+                        subsidiary_id: relation.subsidiary_id,
+                        user_id: relation.user_id
+                    },
+                    include: [
+                        {model: SubsidiaryModel, as: 'subsidiary'}
+                    ]
+                })
+                    .then(obj=>{
+                        if(obj){
+                            return obj.update(relation);
+                        }
+                        return RelationUserSubsidiaryModel.create(relation);
+                    });
+                newObject.push(obj);
+            }
             return {
                 error: false,
                 statusCode: 200,
-                data: bulk
+                data: newObject
             }
         } catch (err) {
             return {
                 error: true,
                 statusCode: 500,
-                errors: err.errors
+                data: err
             }
+        }
+    }
+
+    async updateRelationUserInSubsidiary(data) {
+        try {
+            let item = await RelationUserSubsidiaryModel.findByPk(data.id);
+            if (!item)
+                throw new Error('Element not found');
+            console.log('sdssds');
+            await RelationUserSubsidiaryModel.update({isSelected: false}, {where: {user_id: data.user_id}});
+            await RelationUserSubsidiaryModel.update(data, {where: {id: data.id}});
+            item = await RelationUserSubsidiaryModel.findByPk(data.id);
+            return {
+                error: false,
+                statusCode: 202,
+                data: item
+            };
+        } catch (error) {
+            return {
+                error: true,
+                statusCode: 500,
+                data: error.errors
+            };
         }
     }
 
@@ -276,7 +308,6 @@ class UserService extends Service {
                 items[index].name.trim();
                 items[index].isPrimary = relation.getDataValue('isDefault');
             }
-            ;
             return {
                 error: false,
                 statusCode: 200,

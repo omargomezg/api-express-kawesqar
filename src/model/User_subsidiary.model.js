@@ -1,3 +1,5 @@
+import SubsidiaryModel from "./Subsidiary.model";
+
 const Sequelize = require('sequelize');
 const config = require('../config/config').sequelize();
 const Model = Sequelize.Model;
@@ -49,3 +51,5 @@ User_SubsidiaryModel.init({
     freezeTableName: true,
     timestamps: false
 });
+
+User_SubsidiaryModel.belongsTo(SubsidiaryModel, {foreignKey: 'idSucursal', as: 'subsidiary'})

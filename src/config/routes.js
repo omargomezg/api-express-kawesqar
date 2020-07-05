@@ -209,11 +209,11 @@ export default (server) => {
     server.delete('/api/type-of-discharge/:id', IsProtected, (req, res) => { return res.status(405).send('') });
 
     /**
-     * Type of discharge
+     * Relation user with subsidiary
      */
     server.get('/api/relation-user-subsidiary', IsProtected, UserController.getAllRelationUserInSubsidiary);
     server.post('/api/relation-user-subsidiary', IsProtected, UserController.insertRelationUserInSubsidiary);
-    server.put('/api/relation-user-subsidiary/:id', IsProtected, (req, res) => { return res.status(405).send('') });
+    server.put('/api/relation-user-subsidiary/:id', IsProtected, UserController.updateRelationUserInSubsidiary);
     server.delete('/api/relation-user-subsidiary/:id', IsProtected, (req, res) => { return res.status(405).send('') });
 
     /**

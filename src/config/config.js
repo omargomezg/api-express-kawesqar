@@ -20,6 +20,7 @@ module.exports = {
             host: 'db-alerce.cw940nrosqfm.sa-east-1.rds.amazonaws.com',
             port: 1521,
             dialect: 'mssql',
+            logging: false,
             dialectOptions: {
                 useUTC:false,
             },
