@@ -13,6 +13,9 @@ class InvoiceModel extends Model {
 
 export default InvoiceModel;
 
+/**
+ * Model Invoice is for all type of documents for save products to inventory
+ */
 InvoiceModel.init({
     id: {
         field: 'idFact',
@@ -44,10 +47,17 @@ InvoiceModel.init({
             key: 'provRut'
         }
     },
-    state: { field: 'estadoUso', type: STRING(50) },
-    tax: { field: 'valImpuesto', type: INTEGER },
-    comment: { field: 'notas', type: STRING(255) },
-    subsidiary_id: { field: 'sucursal', type: TINYINT },
+    /**
+     * Fo state possible values are EP (in process) and CF (finalized load)
+     */
+    state: {
+        field: 'estadoUso',
+        type: STRING(50),
+        defaultValue: 'EP'
+    },
+    tax: {field: 'valImpuesto', type: INTEGER},
+    comment: {field: 'notas', type: STRING(255)},
+    subsidiary_id: {field: 'sucursal', type: TINYINT},
     user_id: {
         field: 'rutUsuario',
         type: STRING(12),
@@ -75,5 +85,5 @@ InvoiceModel.init({
 
 InvoiceModel.belongsTo(ProviderModel, {foreignKey: 'provRut', as: 'provider'});
 InvoiceModel.belongsTo(UserModel, {foreignKey: 'rutUsuario', as: 'user'});
-InvoiceModel.belongsTo(TypeOfDocumentModel, { foreignKey: 'idTipoDocIn', as: 'document' })
+InvoiceModel.belongsTo(TypeOfDocumentModel, {foreignKey: 'idTipoDocIn', as: 'document'})
 InvoiceModel.hasMany(InvoiceDetailModel, {foreignKey: 'idFact', as: 'detail'})
