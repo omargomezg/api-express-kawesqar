@@ -22,7 +22,7 @@ class Controller {
         const { id } = req.params;
         let response = await this.service.update(id, req.body);
         if (response.error) return res.status(response.statusCode).send(response.errors);
-        return res.status(201).send(response.data);
+        return res.status(response.statusCode).send(response.data);
     }
 
     async delete(req, res) {

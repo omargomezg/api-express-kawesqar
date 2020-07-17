@@ -37,7 +37,7 @@ class Service {
             return {
                 error: true,
                 statusCode: 500,
-                errors
+                data: errors
             }
         }
     }

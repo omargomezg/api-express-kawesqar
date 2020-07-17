@@ -23,6 +23,8 @@
     "node-excel-export": "^1.4.4",
     "sequelize": "^5.21.7",
     "slugify": "^1.4.0",
+    "swagger-jsdoc": "^4.0.0",
+    "swagger-ui-express": "^4.1.4",
     "tedious": "^8.3.0"
   },
   "devDependencies": {
